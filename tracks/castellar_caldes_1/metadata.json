@@ -1,0 +1,22 @@
+{
+    "segments": [
+        {
+            "start": 0,
+            "end": 184,
+            "roadType": 1,
+            "roughness": 2
+        },
+        {
+            "start": 184,
+            "end": 343,
+            "roadType": 2,
+            "roughness": 0
+        },
+        {
+            "start": 343,
+            "end": 349,
+            "roadType": 0,
+            "roughness": 5
+        }
+    ]
+}
