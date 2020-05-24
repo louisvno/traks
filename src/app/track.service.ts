@@ -2,14 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { MapService } from './map.service';
 import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
+import 'Leaflet.MultiOptionsPolyline'
+import { RoadTypes, RoadColors } from './model/RoadTypes.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TrackService {
-  //this w
-  //ill emit array of the available tracks
-
   constructor(private mapService: MapService, private http: HttpClient) {
       mapService.map.subscribe(map=>{
         this.loadTracksInView(map);
@@ -17,42 +16,27 @@ export class TrackService {
   }
  
   async loadTracksInView(map: L.Map){
-    let metadata = {
-      "segments": [
-          {
-              "start": 0,
-              "end": 184,
-              "roadType": 1,
-              "roughness": 2
-          },
-          {
-              "start": 184,
-              "end": 343,
-              "roadType": 2,
-              "roughness": 0
-          },
-          {
-              "start": 343,
-              "end": 349,
-              "roadType": 0,
-              "roughness": 5
-          }
-      ]
-    };
-    let route : any = await this.http.get('/assets/tracks/tracks.geojson',
+    let track : any = await this.http.get('/assets/tracks/conv.geojson',
     {responseType: 'json'}).toPromise();
-    //let parser = new gpxParser(); //properties copied
-    // Load paths
-    let arrLatLong = route.features[0].geometry.coordinates[0].map(arr => arr.reverse());
-    console.log(arrLatLong)
-    const roadColor = ['red','green','brown'];
+    let arrLatLong = track.features[0].geometry.coordinates;
     // Render segments
-    metadata.segments.forEach(seg => {
-      let polyline = L.polyline(
-        arrLatLong.slice(seg.start, seg.end+1), 
-        {color: roadColor[seg.roadType],
-         smoothFactor: 1.5});
-      polyline.addTo(map);
-    });
+    let polyline = L.multiOptionsPolyline(
+      arrLatLong
+        .map(([long, lat, elev]) => [lat, long]), 
+        {multiOptions: {
+          optionIdxFn: (latLng,_,index) => {
+            let segs = track.metaData.segments;
+            // how to avoid looping too much? preproccessing to just return i directly
+            // i dont like the gpx parsing result now, its not optimized for this
+            for (let i = 0; i < segs.length; i++) {
+              if(index <= segs[i].end) {
+                return segs[i].roadType;
+              } 
+            } 
+            return segs.length;
+          },
+          options: [{color: RoadColors.GRAVEL}, {color: RoadColors.ASPHALT}, {color: RoadColors.COBBLE}]
+        }});
+    polyline.addTo(map);
   }
 }
