@@ -1,5 +1,5 @@
 
-export enum RoadTypes{
+export enum RoadType{
    GRAVEL = 0,
    ASPHALT,
    COBBLE

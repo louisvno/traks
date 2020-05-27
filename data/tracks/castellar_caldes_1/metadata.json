@@ -4,19 +4,19 @@
         {
             "start": 0,
             "end": 184,
-            "roadType": 1,
+            "roadType": 0,
             "roughness": 2
         },
         {
-            "start": 184,
-            "end": 343,
-            "roadType": 2,
+            "start": 185,
+            "end": 342,
+            "roadType": 1,
             "roughness": 0
         },
         {
             "start": 343,
             "end": 349,
-            "roadType": 0,
+            "roadType": 2,
             "roughness": 5
         }
     ]

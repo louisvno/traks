@@ -1,21 +1,20 @@
-export class Track {
-    coordinates: [][];
-    metaData: TrackMetaData;
-}
-
-export class TrackMetaData {
+import { RoadType } from './RoadType.model';
+export interface Track {
+    coordinates: L.LatLng[];
     activity: string;
     segments: Segment[];
-    bounds : {
+    bounds : TrackBounds;
+    roadTypeArray: RoadType[];
+}
+
+export interface TrackBounds {
         minlat: number,
         minlon: number,
         maxlat: number,
         maxlon: number,
-    }
-    roadTypeArray: [];
 }
 
-export class Segment {
+export interface Segment {
     start: number;
     end: number;
     roadType: number;
