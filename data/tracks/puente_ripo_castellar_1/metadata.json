@@ -1,0 +1,15 @@
+{
+    "activity" : "cycling",
+    "segments": [
+        {
+            "start": 0,
+            "end": 308,
+            "roadType": 0
+        },
+        {
+            "start": 309,
+            "end": 349,
+            "roadType": 1
+        }
+    ]
+}

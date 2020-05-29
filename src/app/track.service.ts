@@ -3,7 +3,7 @@ import { MapService } from './map.service';
 import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
 import 'Leaflet.MultiOptionsPolyline'
-import { RoadType, RoadColors } from './model/RoadType.model';
+import { RoadColors } from './model/RoadType.model';
 import { Track } from './model/TrackMetaData.model';
 
 @Injectable({
@@ -17,7 +17,10 @@ export class TrackService {
   }
  
   async loadTracksInView(map: L.Map){
-    let track : Track = await this.http.get<Track>('/assets/tracks/conv.geojson',
+    const trackList = await this.http.get<[]>('/assets/tracks/tracklist.json',
+    {responseType: 'json'}).toPromise();
+    trackList.forEach(async trk => {
+      let track : Track = await this.http.get<Track>(`/assets/tracks/${trk}`,
       {responseType: 'json'}).toPromise();
     // Render segments
     let polyline = L.multiOptionsPolyline(
@@ -29,5 +32,6 @@ export class TrackService {
           options: [{color: RoadColors.GRAVEL}, {color: RoadColors.ASPHALT}, {color: RoadColors.COBBLE}]
         }});
     polyline.addTo(map);
+    } )   
   }
 }

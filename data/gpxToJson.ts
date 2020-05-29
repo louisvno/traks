@@ -1,16 +1,9 @@
-
-/*
-*what would a builder schema look like
-outputfolder
-input folder
-orrr just infile in metadata outfolder
-orr check wich folders are not generated yet, foldername == outfilename
-*/
-
 import { Track, TrackBounds, Segment } from "src/app/model/TrackMetaData.model";
 import { LatLng } from 'leaflet';
+import { Dirent } from 'fs';
 const xml2js = require('xml2js'),
-fs = require('fs');
+fs = require('fs'),
+path = require('path');
 
 const trackMapper = (gpxJson, metaData): Track => {
     const track = {} as Track;
@@ -19,10 +12,12 @@ const trackMapper = (gpxJson, metaData): Track => {
             return {lat:pt.$.lat , lng: pt.$.lon} as LatLng
         });
 
-    track.bounds = boundsMapper(gpxJson.gpx.metadata.find(obj => obj.hasOwnProperty("bounds")));
-    track.roadTypeArray = track.coordinates.map(
-        (_, index) => roadTypeMapper(metaData.segments, index)
-    );
+    if(metaData){
+        track.bounds = boundsMapper(gpxJson.gpx.metadata.find(obj => obj.hasOwnProperty("bounds")));
+        track.roadTypeArray = track.coordinates.map(
+            (_, index) => roadTypeMapper(metaData.segments, index)
+        );
+    }
     
     return track;
 }
@@ -39,11 +34,24 @@ const boundsMapper = (boundsJson): TrackBounds => {
     return boundsJson.bounds[0].$;
 }
 
-const parseGpx = (gpxPath, metaDataPath) => {
+const parseGpx = (tracksFolder) => {
+    const tracks = fs.readdirSync(tracksFolder);
     const parser = new xml2js.Parser();
-    let gpx = fs.readFileSync('./data/tracks/castellar_caldes_1/track_20200301_114347_castellar-caldes_edit_optimized.gpx', 'utf8');
-    let meta = JSON.parse(fs.readFileSync('./data/tracks/castellar_caldes_1/metadata.json'));
-    parser.parseStringPromise(gpx).then(data => fs.writeFileSync('./src/assets/tracks/conv.geojson',JSON.stringify(trackMapper(data,meta))));    
+    const dest = './src/assets/tracks/';
+
+    for (const dirent of tracks) {
+        const dirContents = fs.readdirSync(path.join(tracksFolder, dirent));
+        const metaData = dirContents.find((file) => file.startsWith("metadata"));
+        const gpxTrk = dirContents.find((file) => file.endsWith(".gpx"))
+        const gpx = fs.readFileSync(path.join(tracksFolder, dirent, gpxTrk), 'utf8');
+        const meta = JSON.parse(fs.readFileSync(path.join(tracksFolder, dirent, metaData)));
+        const outfile = path.parse(gpxTrk);
+        
+        parser.parseStringPromise(gpx)
+            .then(data => 
+                fs.writeFileSync(path.join(dest, path.format({name: outfile.name, ext: '.json'})),
+                                 JSON.stringify(trackMapper(data,meta))));    
+    }
 }
 
-parseGpx("","");
+parseGpx("./data/tracks");
