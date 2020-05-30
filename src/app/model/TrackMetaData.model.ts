@@ -1,4 +1,10 @@
 import { RoadType } from './RoadType.model';
+
+export interface TrackViewModel{
+    model: Track,
+    view: L.MultiOptionsPolyline
+}
+
 export interface Track {
     coordinates: L.LatLng[];
     activity: string;

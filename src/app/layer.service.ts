@@ -1,10 +1,13 @@
 import { TrackService } from './track.service';
 import { MapService } from './map.service';
 import { Injectable } from '@angular/core';
-import { LatLng, map } from 'leaflet';
-import { take, withLatestFrom } from 'rxjs/operators';
-import { Subscription, combineLatest } from 'rxjs';
+import { withLatestFrom } from 'rxjs/operators';
+import { Subscription, Subject } from 'rxjs';
 import { Set } from 'immutable'
+import { Track, TrackViewModel } from './model/TrackMetaData.model';
+import * as L from 'leaflet';
+import 'Leaflet.MultiOptionsPolyline'
+import { RoadColors } from './model/RoadType.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,27 +15,29 @@ import { Set } from 'immutable'
 //rename to UI service or sth
 export class LayerService {
   
-  public allLayers: Set<L.MultiOptionsPolyline> = Set();
+  public allLayers: Set<TrackViewModel> = Set();
+  public trackSelected: Subject<TrackViewModel> = new Subject();
   private trkList: Subscription;
 
   constructor(private mapService: MapService, private trackService:TrackService) { 
       this.trkList = this.trackService.trackList.pipe(
-        withLatestFrom(mapService.map)
+        withLatestFrom(this.mapService.map)
       )
       .subscribe(
         ([trks, map])=> {
           trks.forEach(trk => {
-            if(!this.allLayers.has(trk)) this.allLayers.add(trk);
-            this.addToMap(trk,map);
+            const viewModel = this.polyLineFromTrack(trk);
+            if(!this.allLayers.has(viewModel)) this.allLayers.add(viewModel);
+            this.addToMap(viewModel.view,map);
           })
         }
       )
 
-      this.trackService.trackSelected.pipe(
+      this.trackSelected.pipe(
         withLatestFrom(mapService.map)
       )
       .subscribe(([trk, map]) => {
-        this.focusOnTrack(trk,map)
+        this.focusOnTrack(trk.view,map)
       })
   }
 
@@ -46,4 +51,22 @@ export class LayerService {
   public async addToMap(l: L.MultiOptionsPolyline, map: L.Map){
     if(!map.hasLayer(l)) l.addTo(map);
   }
+
+  public polyLineFromTrack(track: Track): TrackViewModel{
+    // Render segments
+    let polyline = L.multiOptionsPolyline(
+      track.coordinates, 
+        {multiOptions: {
+          optionIdxFn: (latLng,_,index) => {
+            return track.roadTypeArray[index];
+          },
+          options: [{color: RoadColors.GRAVEL}, {color: RoadColors.ASPHALT}, {color: RoadColors.COBBLE}]
+        }});    
+    
+    polyline.on('click', (event: L.LeafletEvent) => {
+      this.trackSelected.next({model: track , view: polyline});
+    })
+    return {model: track , view: polyline};
+  }
+
 }
