@@ -1,3 +1,4 @@
+import { LayerService } from './layer.service';
 import { TrackService } from './track.service';
 import { Component } from '@angular/core';
 
@@ -8,5 +9,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'traks';
-  constructor(private trackService: TrackService){}
+  constructor(private trackService: TrackService, private layer: LayerService){}
 }

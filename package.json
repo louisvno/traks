@@ -23,6 +23,7 @@
     "@types/leaflet": "^1.5.12",
     "Leaflet.MultiOptionsPolyline": "^1.0.0",
     "gpx-parse": "^0.10.4",
+    "immutable": "^4.0.0-rc.12",
     "leaflet": "^1.6.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
