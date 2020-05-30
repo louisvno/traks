@@ -28,7 +28,7 @@ export class LayerService {
           trks.forEach(trk => {
             const viewModel = this.polyLineFromTrack(trk);
             if(!this.allLayers.has(viewModel)) this.allLayers.add(viewModel);
-            this.addToMap(viewModel.view,map);
+            this.addToMap(viewModel.mapFeature,map);
           })
         }
       )
@@ -37,7 +37,7 @@ export class LayerService {
         withLatestFrom(mapService.map)
       )
       .subscribe(([trk, map]) => {
-        this.focusOnTrack(trk.view,map)
+        this.focusOnTrack(trk.mapFeature,map)
       })
   }
 
@@ -64,9 +64,9 @@ export class LayerService {
         }});    
     
     polyline.on('click', (event: L.LeafletEvent) => {
-      this.trackSelected.next({model: track , view: polyline});
+      this.trackSelected.next({model: track , mapFeature: polyline});
     })
-    return {model: track , view: polyline};
+    return {model: track , mapFeature: polyline};
   }
 
 }
