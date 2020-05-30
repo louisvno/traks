@@ -1,2 +1,17 @@
-<div id="map-container" appMap></div>
-<router-outlet></router-outlet>
+<div id="app-container">
+  <div id="map-container" appMap></div>
+
+  <mat-expansion-panel *ngIf="trkModel | async as model" id='track-info-panel'>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      {{model.title}}
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  
+  <p>{{model.description}}</p>
+
+  <mat-action-row>
+    <button mat-button>Download .gpx</button>
+  </mat-action-row>
+  </mat-expansion-panel>
+</div>

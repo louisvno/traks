@@ -6,11 +6,16 @@ export interface TrackViewModel{
 }
 
 export interface Track {
+    title: string;
+    description: string;
     coordinates: L.LatLng[];
     activity: string;
     segments: Segment[];
     bounds : TrackBounds;
     roadTypeArray: RoadType[];
+    difficulty: string;
+    pois: any[];
+
 }
 
 export interface TrackBounds {

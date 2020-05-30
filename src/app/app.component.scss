@@ -1,4 +1,18 @@
-#map-container {
+#app-container {
     height: 100vh;
-    width: 100vw;
+    overflow: hidden;
 }
+
+#map-container {
+    height: 100%;
+    width: 100%;
+}
+
+#track-info-panel {
+    z-index: 999;
+    position: absolute;
+    bottom: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+

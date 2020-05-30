@@ -17,6 +17,8 @@ const trackMapper = (gpxJson, metaData): Track => {
         track.roadTypeArray = track.coordinates.map(
             (_, index) => roadTypeMapper(metaData.segments, index)
         );
+        track.title = metaData.title;
+        track.description = metaData.description;
     }
     
     return track;
