@@ -2,13 +2,14 @@ import { Track, TrackBounds, Segment } from "src/app/model/TrackMetaData.model";
 import { LatLng } from 'leaflet';
 const xml2js = require('xml2js'),
 fs = require('fs'),
-path = require('path');
+path = require('path'),
+Decimal = require('decimal.js');
 
 const trackMapper = (gpxJson, metaData): Track => {
     const track = {} as Track;
     track.coordinates = gpxJson.gpx.trk[0].trkseg[0].trkpt
         .map(pt =>{ 
-            return {lat:pt.$.lat , lng: pt.$.lon, alt: pt.ele[0]} as LatLng
+            return {lat: pt.$.lat , lng: pt.$.lon, alt: new Decimal(pt.ele[0]).round().toNumber()} as LatLng
         });
     if(metaData){
         track.bounds = boundsMapper(gpxJson.gpx.metadata.find(obj => obj.hasOwnProperty("bounds")));
@@ -28,22 +29,25 @@ const trackMapper = (gpxJson, metaData): Track => {
         }
         distVsAlt.push(
             {
-                x: +getDistanceBetween(coords[index-1].lat,coords[index-1].lng,coords[index].lat,coords[index].lng), 
+                x: getDistanceBetween(coords[index-1].lat,coords[index-1].lng,coords[index].lat,coords[index].lng), 
                 y: coords[index].alt
             })
     }
-
     const profile = [];
     //sum distances
     distVsAlt.reduce((acc, curr, i) => {
-        if(i === 0) profile.push({name: 0, value: +curr.y});
-        else profile.push({name: acc + curr.x, value: +curr.y});
-        return acc + curr.x;
+        if(i === 0) profile.push({name: 0, value: curr.y});
+        else profile.push({name: new Decimal(acc).add(new Decimal(curr.x)).toNumber(), value: curr.y});
+        return new Decimal(acc).add(new Decimal(curr.x));
     }, 0);
 
-    track.profile = profile;
+    // follow ngx charts object
+    track.profile = [{
+        name: "Elevation",
+        series: profile
+    }];
     track.distance = distVsAlt
-        .reduce((acc,curr)=> acc + curr.x, 0);
+        .reduce((acc,curr)=> new Decimal(acc).add(new Decimal(curr.x)), 0);
 
     return track;
 }
@@ -88,7 +92,9 @@ const getDistanceBetween = (lat1, lon1, lat2, lon2) => {
             c(lat1 * p) * c(lat2 * p) * 
             (1 - c((lon2 - lon1) * p))/2;
   
-    return Math.round(12742 * Math.asin(Math.sqrt(a))*1000) / 1000; // 2 * R; R = 6371 km
+    let res = 12742 * Math.asin(Math.sqrt(a));
+    let roundedToMeter = Math.round(res *1000) / 1000;
+    return roundedToMeter; // 2 * R; R = 6371 km
 }
 
 parseGpx("./data/tracks");
