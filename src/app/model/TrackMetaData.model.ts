@@ -15,7 +15,8 @@ export interface Track {
     roadTypeArray: RoadType[];
     difficulty: string;
     pois: any[];
-
+    distance: number;
+    profile: any[];
 }
 
 export interface TrackBounds {

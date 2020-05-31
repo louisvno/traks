@@ -9,6 +9,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatButtonModule} from '@angular/material/button'; 
+import {MatTabsModule} from '@angular/material/tabs'; 
+import { NgxChartsModule, LineChartModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import {MatButtonModule} from '@angular/material/button';
     BrowserAnimationsModule,
     MatExpansionModule,
     MatButtonModule,
+    MatTabsModule,
+    LineChartModule
   ],
   providers: [],
   bootstrap: [AppComponent]
