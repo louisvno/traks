@@ -1,5 +1,7 @@
 import { Track, TrackBounds, Segment } from "src/app/model/TrackMetaData.model";
 import { LatLng } from 'leaflet';
+import { retry } from 'rxjs/operators';
+import { element } from 'protractor';
 const xml2js = require('xml2js'),
 fs = require('fs'),
 path = require('path'),
@@ -41,11 +43,12 @@ const trackMapper = (gpxJson, metaData): Track => {
         return new Decimal(acc).add(new Decimal(curr.x));
     }, 0);
 
-    // follow ngx charts object
+    // follow ngx charts object scheme
     track.profile = [{
-        name: "Elevation",
-        series: profile
+        name: "elevation",
+        series: downSampleProfile(profile,0.5),
     }];
+    
     track.distance = distVsAlt
         .reduce((acc,curr)=> new Decimal(acc).add(new Decimal(curr.x)), 0);
 
@@ -95,6 +98,24 @@ const getDistanceBetween = (lat1, lon1, lat2, lon2) => {
     let res = 12742 * Math.asin(Math.sqrt(a));
     let roundedToMeter = Math.round(res *1000) / 1000;
     return roundedToMeter; // 2 * R; R = 6371 km
+}
+
+const downSampleProfile= (data: any[] ,interval: number):any[] =>  {
+    const res =[];
+    for (let count = 0; count < data.length; count= count + interval) {
+        const elements = data
+            .filter(val => val.name >= count && val.name < count + interval)
+            .map(v => v.value)
+        const n = elements.length;
+
+        //not likely there are 0 points in 1km interval
+        if(elements.length > 0){
+            const mean = elements.reduce((acc, curr) => acc + curr)/n;
+            res.push({name: count, value: mean})
+        }
+
+    }
+    return res;
 }
 
 parseGpx("./data/tracks");

@@ -11,16 +11,12 @@
 #track-info-panel {
     z-index: 999;
     position: absolute;
-    bottom: 5px;
-    margin-left: 10px;
-    margin-right: 10px;
+    bottom: 20px;
+    width:100%;
+    max-width: 800px;
 }
-
-#profile {
-    z-index: 999;
-    position: absolute;
-    bottom: 5px;
-    margin-left: 10px;
-    margin-right: 10px;
+#chart-container{
+    display: flex;
+    justify-content: center;
+    max-height: 200px;
 }
-

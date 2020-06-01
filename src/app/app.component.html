@@ -10,10 +10,9 @@
   <mat-tab-group>
     <mat-tab label="Description">{{model.description}}</mat-tab>
     <mat-tab label="Profile">
-      <div style="width: 400px; height: 300px;">
+      <div id='chart-container'>
       <ngx-charts-line-chart
       id="profile"
-      [view]="view"
       [autoScale]="true"
       [xAxis]="true"
       [yAxis]= "true"
@@ -21,7 +20,6 @@
       [results]="model.profile"></ngx-charts-line-chart>
     </div>
     </mat-tab>
-    <mat-tab label="Stats"></mat-tab>
   </mat-tab-group>
 
   <mat-action-row>
