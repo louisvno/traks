@@ -16,6 +16,7 @@ import { RoadColors } from './model/RoadType.model';
 export class LayerService {
   
   public allLayers: Set<TrackViewModel> = Set();
+  public markers: L.Marker[] = [];
   public trackSelected: Subject<TrackViewModel> = new Subject();
   private trkList: Subscription;
 
@@ -42,8 +43,20 @@ export class LayerService {
   }
 
   public async focusOnTrack(l : L.MultiOptionsPolyline, map: L.Map){
-    map.fitBounds(l.getBounds())
-    //show start and finish
+    map.fitBounds(l.getBounds());
+    const latLngs = l.getLatLngs();
+    this.markers.forEach(m => m.remove());
+    this.markers = [];
+
+    const startIcon = new L.Icon({iconUrl:'/assets/icons/Untitled-1.png', iconAnchor:[9,30]});
+    const startMarker =new L.Marker(latLngs[0],{icon: startIcon});
+    startMarker.addTo(map);
+    this.markers.push(startMarker)
+
+    const endIcon = new L.Icon({iconUrl:'/assets/icons/end-icon-sq.png', iconAnchor:[9,30]})
+    const endMarker = new L.Marker(latLngs[latLngs.length -1],{icon: endIcon});
+    endMarker.addTo(map);
+    this.markers.push(endMarker)
     //show other track opacity 0.5?
     //
   }
