@@ -10,6 +10,7 @@
   <mat-tab-group>
     <mat-tab label="Description">{{model.description}}</mat-tab>
     <mat-tab label="Profile">
+      <ng-template matTabContent>
       <div id='chart-container'>
       <ngx-charts-line-chart
       id="profile"
@@ -19,6 +20,7 @@
       [gradient]= "false"
       [results]="model.profile"></ngx-charts-line-chart>
     </div>
+    </ng-template>
     </mat-tab>
   </mat-tab-group>
 

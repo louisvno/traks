@@ -18,5 +18,7 @@
 #chart-container{
     display: flex;
     justify-content: center;
-    max-height: 200px;
+    //max-height: 200px;
+    flex-grow: 1;
+    //width:100%
 }
