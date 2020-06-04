@@ -28,7 +28,7 @@ jobs:
           ###### Repository/Build Configurations - These values can be configured to match you app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "/" # App source code path
-          app_artifact_location: "/dist/traks" # Built app content directory - optional
+          app_artifact_location: "dist/traks" # Built app content directory - optional
           app_build_command: npm run ng build --prod
           ###### End of Repository/Build Configurations ######
 
