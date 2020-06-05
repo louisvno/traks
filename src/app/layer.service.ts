@@ -30,6 +30,7 @@ export class LayerService {
             const viewModel = this.polyLineFromTrack(trk);
             if(!this.allLayers.has(viewModel)) this.allLayers.add(viewModel);
             this.addToMap(viewModel.mapFeature,map);
+            this.addToMap(viewModel.touchHelper,map);
           })
         }
       )
@@ -61,12 +62,13 @@ export class LayerService {
     //
   }
 
-  public async addToMap(l: L.MultiOptionsPolyline, map: L.Map){
+  public async addToMap(l: L.Layer, map: L.Map){
     if(!map.hasLayer(l)) l.addTo(map);
   }
 
   public polyLineFromTrack(track: Track): TrackViewModel{
     // Render segments
+    let polylineHelper = L.polyline( track.coordinates, {weight: 20, opacity:0 });
     let polyline = L.multiOptionsPolyline(
       track.coordinates, 
         {multiOptions: {
@@ -75,11 +77,12 @@ export class LayerService {
           },
           options: [{color: RoadColors.GRAVEL}, {color: RoadColors.ASPHALT}, {color: RoadColors.COBBLE}]
         }});    
-    
-    polyline.on('click', (event: L.LeafletEvent) => {
-      this.trackSelected.next({model: track , mapFeature: polyline});
+
+    polylineHelper.on('click', (event: L.LeafletEvent) => {
+      this.trackSelected.next({model: track , mapFeature: polyline, touchHelper: polylineHelper});
     })
-    return {model: track , mapFeature: polyline};
+    
+    return {model: track , mapFeature: polyline,touchHelper: polylineHelper};
   }
 
 }

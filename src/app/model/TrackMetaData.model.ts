@@ -2,7 +2,8 @@ import { RoadType } from './RoadType.model';
 
 export interface TrackViewModel{
     model: Track,
-    mapFeature: L.MultiOptionsPolyline
+    mapFeature: L.MultiOptionsPolyline,
+    touchHelper?: L.Polyline
 }
 
 export interface Track {
