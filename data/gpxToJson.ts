@@ -1,8 +1,8 @@
 import { Track, TrackBounds, Segment } from "src/app/model/TrackMetaData.model";
 import { LatLng } from 'leaflet';
-import { retry } from 'rxjs/operators';
-import { element } from 'protractor';
-const xml2js = require('xml2js'),
+
+const s=require('simplify-js'),
+xml2js = require('xml2js'),
 fs = require('fs'),
 path = require('path'),
 Decimal = require('decimal.js');
@@ -13,8 +13,11 @@ const trackMapper = (gpxJson, metaData): Track => {
         .map(pt =>{ 
             return {lat: pt.$.lat , lng: pt.$.lon, alt: new Decimal(pt.ele[0]).round().toNumber()} as LatLng
         });
+
+
     if(metaData){
-        track.bounds = boundsMapper(gpxJson.gpx.metadata.find(obj => obj.hasOwnProperty("bounds")));
+        // TODO calculate bounds
+        //track.bounds = boundsMapper(gpxJson.gpx.metadata.find(obj => obj.hasOwnProperty("bounds")));
         track.roadTypeArray = track.coordinates.map(
             (_, index) => roadTypeMapper(metaData.segments, index)
         );
@@ -51,7 +54,11 @@ const trackMapper = (gpxJson, metaData): Track => {
     
     track.distance = distVsAlt
         .reduce((acc,curr)=> new Decimal(acc).add(new Decimal(curr.x)), 0);
-
+    
+    const coordsXY = track.coordinates.map(c => ({x: new Decimal(c.lat).toNumber(), y: new Decimal(c.lng).toNumber(), alt: c.alt}))
+    console.log("Original n points: " + coordsXY.length);
+    track.coordinates = s(coordsXY, 0.00004, true).map(res => ({lat:res.x,lng:res.y} as LatLng));
+    console.log("Number of points after optimization: " + track.coordinates.length )
     return track;
 }
 
