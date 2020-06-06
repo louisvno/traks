@@ -1,6 +1,10 @@
-import { Track, TrackBounds, Segment } from "src/app/model/TrackMetaData.model";
+import { Track, Segment } from "src/app/model/TrackMetaData.model";
 import { LatLng } from 'leaflet';
-
+/**
+ * Parses gpx xml file
+ * Simplifies gpx data
+ * Generates Track model json
+ */
 const s=require('simplify-js'),
 xml2js = require('xml2js'),
 fs = require('fs'),
@@ -9,11 +13,20 @@ Decimal = require('decimal.js');
 
 const trackMapper = (gpxJson, metaData): Track => {
     const track = {} as Track;
-    track.coordinates = gpxJson.gpx.trk[0].trkseg[0].trkpt
+    const latLngs = gpxJson.gpx.trk[0].trkseg[0].trkpt
         .map(pt =>{ 
             return {lat: pt.$.lat , lng: pt.$.lon, alt: new Decimal(pt.ele[0]).round().toNumber()} as LatLng
         });
 
+    const profile = getElevationProfile(latLngs);
+    // follow ngx charts object scheme
+    track.profile = [{
+        name: "elevation",
+        series: simplifyProfile(profile,0.5),
+    }];
+    // simplify track
+    track.totalDistance = profile[profile.length -1].name;
+    track.coordinates = simplifyTrack(latLngs)
 
     if(metaData){
         // TODO calculate bounds
@@ -23,43 +36,19 @@ const trackMapper = (gpxJson, metaData): Track => {
         );
         track.title = metaData.title;
         track.description = metaData.description;
+        track.fileName;
     }
-    const distVsAlt= [];
 
-    for (let index = 0; index < track.coordinates.length-1; index++) {
-        const coords = track.coordinates;
-        if (index === 0) {
-            distVsAlt.push({x: 0, y: track.coordinates[index].alt});
-            continue;
-        }
-        distVsAlt.push(
-            {
-                x: getDistanceBetween(coords[index-1].lat,coords[index-1].lng,coords[index].lat,coords[index].lng), 
-                y: coords[index].alt
-            })
-    }
-    const profile = [];
-    //sum distances
-    distVsAlt.reduce((acc, curr, i) => {
-        if(i === 0) profile.push({name: 0, value: curr.y});
-        else profile.push({name: new Decimal(acc).add(new Decimal(curr.x)).toNumber(), value: curr.y});
-        return new Decimal(acc).add(new Decimal(curr.x));
-    }, 0);
-
-    // follow ngx charts object scheme
-    track.profile = [{
-        name: "elevation",
-        series: downSampleProfile(profile,0.5),
-    }];
-    
-    track.distance = distVsAlt
-        .reduce((acc,curr)=> new Decimal(acc).add(new Decimal(curr.x)), 0);
-    
-    const coordsXY = track.coordinates.map(c => ({x: new Decimal(c.lat).toNumber(), y: new Decimal(c.lng).toNumber(), alt: c.alt}))
-    console.log("Original n points: " + coordsXY.length);
-    track.coordinates = s(coordsXY, 0.00004, true).map(res => ({lat:res.x,lng:res.y} as LatLng));
-    console.log("Number of points after optimization: " + track.coordinates.length )
     return track;
+}
+
+const simplifyTrack = (latLngs: LatLng[]) => {    
+    const points = latLngs.map(c => ({x: new Decimal(c.lat).toNumber(), y: new Decimal(c.lng).toNumber(), alt: c.alt}))
+    console.log("Original n points: " + points.length);
+    const reducedPoints = s(points, 0.00004, true).map(res => ({lat:res.x,lng:res.y} as LatLng));
+    console.log("Number of points after optimization: " + reducedPoints.length );
+    
+    return reducedPoints;
 }
 
 const roadTypeMapper = (segments: Segment[], index: number) => {
@@ -68,10 +57,6 @@ const roadTypeMapper = (segments: Segment[], index: number) => {
             return segments[i].roadType;
           } 
         } 
-}
-
-const boundsMapper = (boundsJson): TrackBounds => {
-    return boundsJson.bounds[0].$;
 }
 
 const parseGpx = (tracksFolder) => {
@@ -83,15 +68,45 @@ const parseGpx = (tracksFolder) => {
         const dirContents = fs.readdirSync(path.join(tracksFolder, dirent));
         const metaData = dirContents.find((file) => file.startsWith("metadata"));
         const gpxTrk = dirContents.find((file) => file.endsWith(".gpx"))
+        console.log("loading track: " + gpxTrk);
         const gpx = fs.readFileSync(path.join(tracksFolder, dirent, gpxTrk), 'utf8');
         const meta = JSON.parse(fs.readFileSync(path.join(tracksFolder, dirent, metaData)));
+         
         const outfile = path.parse(gpxTrk);
-        
+        meta.fileName = outfile.name;
+        meta.fileType = outfile.ext;
+
         parser.parseStringPromise(gpx)
             .then(data => 
                 fs.writeFileSync(path.join(dest, path.format({name: outfile.name, ext: '.json'})),
                                  JSON.stringify(trackMapper(data,meta))));    
     }
+}
+
+
+const getElevationProfile = (latLngs: LatLng[]): {name:number, value: number}[] => {
+    const distVsAlt= [];
+    const profile: {name:number, value: number}[]=[];
+    // map latLng to cumulative distance vs altitude
+    for (let index = 0; index < latLngs.length-1; index++) {
+        if (index === 0) {
+            distVsAlt.push({x: 0, y: latLngs[index].alt});
+            continue;
+        }
+        distVsAlt.push(
+            {
+                x: getDistanceBetween(latLngs[index-1].lat,latLngs[index-1].lng,latLngs[index].lat,latLngs[index].lng), 
+                y: latLngs[index].alt
+            })
+    }
+
+    distVsAlt.reduce((acc, curr, i) => {
+        if(i === 0) profile.push({name: 0, value: curr.y});
+        else profile.push({name: new Decimal(acc).add(new Decimal(curr.x)).toNumber(), value: curr.y});
+        return new Decimal(acc).add(new Decimal(curr.x));
+    }, 0);
+
+    return profile;
 }
 
 //https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
@@ -107,7 +122,7 @@ const getDistanceBetween = (lat1, lon1, lat2, lon2) => {
     return roundedToMeter; // 2 * R; R = 6371 km
 }
 
-const downSampleProfile= (data: any[] ,interval: number):any[] =>  {
+const simplifyProfile= (data: any[] ,interval: number):any[] =>  {
     const res =[];
     for (let count = 0; count < data.length; count= count + interval) {
         const elements = data
