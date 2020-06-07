@@ -20,7 +20,7 @@ export class MapDirective {
   
   constructor(private element: ElementRef, private mapService: MapService) { 
     
-    this.map = L.map(element.nativeElement)
+    this.map = L.map(element.nativeElement, {zoomControl: false})
     .setView([41.5, 2.14], 10);
 
     this.mapService.register(this.map);

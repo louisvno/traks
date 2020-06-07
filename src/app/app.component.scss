@@ -1,5 +1,5 @@
 #app-container {
-    height: 100vh;
+    height: 100%;
     overflow: hidden;
 }
 
@@ -14,11 +14,16 @@
     bottom: 20px;
     width:100%;
     max-width: 800px;
+
+    @media only screen and (orientation: landscape) {
+        bottom: 0px;
+        &.mat-expanded{
+            height: 100%;
+        }
+    }
 }
+
 #chart-container{
     display: flex;
     justify-content: center;
-    //max-height: 200px;
-    //flex-grow: 1;
-    //width:100%
 }
