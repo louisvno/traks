@@ -9,8 +9,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatButtonModule} from '@angular/material/button'; 
+import {MatListModule} from '@angular/material/list';
 import {MatTabsModule} from '@angular/material/tabs'; 
-import { NgxChartsModule, LineChartModule } from '@swimlane/ngx-charts';
+import {LineChartModule } from '@swimlane/ngx-charts';
+import {MatDividerModule} from '@angular/material/divider'; 
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { NgxChartsModule, LineChartModule } from '@swimlane/ngx-charts';
     MatExpansionModule,
     MatButtonModule,
     MatTabsModule,
-    LineChartModule
+    LineChartModule,
+    MatListModule,
+    MatDividerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

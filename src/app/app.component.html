@@ -22,9 +22,19 @@
     </div>
     </ng-template>
     </mat-tab>
+    <mat-tab label="Data">
+      <ul class="data-list">
+        <li>distance: {{model.totalDistance}} km</li>
+        <li>lowest point: </li>
+        <li>heighest point: </li>
+      </ul>
+      
+      <mat-divider></mat-divider>
+      <div class="download-area">
+        <button mat-button color="primary">Download .gpx</button> 
+      </div>
+    </mat-tab>
   </mat-tab-group>
-
-
   </mat-expansion-panel>
 </div>
 </div>
