@@ -1,0 +1,13 @@
+{
+    "title": "Linkup",
+    "description": "Linkup between the Montcada - la Llagosta - Caldes de Montbui line and the Caldes - Parets Line.",
+    "activity" : "cycling",
+    "segments": [
+        {
+            "start": 0,
+            "end": 140,
+            "roadType": 0,
+            "roughness": 2
+        }
+    ]
+}

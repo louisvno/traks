@@ -1,0 +1,28 @@
+{
+    "title": "Caldes - Parets Train station",
+    "description": "Pretty fast line with some nice gravel sections. You can take Renfe R3 line here if you are tired.",
+    "activity" : "cycling",
+    "segments": [
+        {
+            "start": 0,
+            "end": 162,
+            "roadType": 0,
+            "roughness": 2
+        },{
+            "start": 163,
+            "end": 255,
+            "roadType": 1,
+            "roughness": 1
+        },{
+            "start": 256,
+            "end": 309,
+            "roadType": 0,
+            "roughness": 2
+        },{
+            "start": 310,
+            "end": 350,
+            "roadType": 0,
+            "roughness": 2
+        }
+    ]
+}
