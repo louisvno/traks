@@ -1,5 +1,6 @@
 import { Track, Segment, NgxChartSeries, NgxChartPoint } from "src/app/model/TrackMetaData.model";
 import { LatLng } from 'leaflet';
+import { mergeMapTo } from 'rxjs/operators';
 /**
  * Parses gpx xml file
  * Simplifies gpx data
@@ -44,7 +45,8 @@ const trackMapper = (gpxJson, metaData): Track => {
         );
         track.title = metaData.title;
         track.description = metaData.description;
-        track.fileName;
+        track.fileName = metaData.fileName;
+        track.fileType = metaData.fileType;
     }
 
     return track;
