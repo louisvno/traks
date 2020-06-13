@@ -18,14 +18,21 @@ const trackMapper = (gpxJson, metaData): Track => {
             return {lat: pt.$.lat , lng: pt.$.lon, alt: new Decimal(pt.ele[0]).round().toNumber()} as LatLng
         });
     const profile = getElevationProfile(latLngs);
+    const simplifiedProfile = simplifyProfile(profile,0.5);
 
     // follow ngx charts object scheme
     track.profile = [{
         name: "elevation",
-        series: simplifyProfile(profile,0.5),
+        series: simplifiedProfile,
     }];
 
-    // simplify track
+    track.maxElevation = simplifiedProfile
+        .map(p => p.value)
+        .reduce((a,b) => Math.max(a,b));
+    track.minElevation = simplifiedProfile
+        .map(p => p.value)
+        .reduce((a,b) => Math.min(a,b));
+
     track.totalDistance = profile[profile.length -1].name;
     track.coordinates = simplifyTrack(latLngs)
 

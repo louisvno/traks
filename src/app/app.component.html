@@ -24,9 +24,9 @@
     </mat-tab>
     <mat-tab label="Data">
       <ul class="data-list">
-        <li>distance: {{model.totalDistance}} km</li>
-        <li>lowest point: </li>
-        <li>heighest point: </li>
+        <li>distance: {{model.totalDistance | number:'1.1-2'}} km</li>
+        <li>min. elevation: {{model.minElevation | number:'1.0-0'}} m</li>
+        <li>max. elevation: {{model.maxElevation | number:'1.0-0'}} m</li>
       </ul>
       
       <mat-divider></mat-divider>
