@@ -1,37 +1,48 @@
 import { RoadType } from './RoadType.model';
 
 export interface TrackViewModel{
-    model: Track,
     mapFeature: L.MultiOptionsPolyline,
+    model: Track,
     touchHelper?: L.Polyline
 }
 
 export interface Track {
-    title: string;
-    description: string;
-    coordinates: L.LatLng[];
     activity: string;
-    segments: Segment[];
     bounds : TrackBounds;
-    roadTypeArray: RoadType[];
+    coordinates: L.LatLng[];
+    description: string;
     difficulty: string;
-    pois: any[];
-    totalDistance: number;
-    profile: any[];
     fileName: string;
     fileType: string;
+    maxElevation: number;
+    minElevation: number;
+    pois: any[];
+    profile: NgxChartSeries[];
+    roadTypeArray: RoadType[];
+    segments: Segment[];
+    title: string;
+    totalDistance: number;
 }
 
 export interface TrackBounds {
-        minlat: number,
-        minlon: number,
-        maxlat: number,
-        maxlon: number,
+    minlat: number,
+    minlon: number,
+    maxlat: number,
+    maxlon: number,
 }
 
 export interface Segment {
-    start: number;
     end: number;
     roadType: number;
     roughness: number;
+    start: number;
+}
+
+export interface NgxChartSeries {
+    name: string;
+    series: NgxChartPoint[];
+}
+export interface NgxChartPoint {
+    name: number | string;
+    value: number
 }

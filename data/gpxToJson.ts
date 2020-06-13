@@ -1,4 +1,4 @@
-import { Track, Segment } from "src/app/model/TrackMetaData.model";
+import { Track, Segment, NgxChartSeries, NgxChartPoint } from "src/app/model/TrackMetaData.model";
 import { LatLng } from 'leaflet';
 /**
  * Parses gpx xml file
@@ -17,13 +17,14 @@ const trackMapper = (gpxJson, metaData): Track => {
         .map(pt =>{ 
             return {lat: pt.$.lat , lng: pt.$.lon, alt: new Decimal(pt.ele[0]).round().toNumber()} as LatLng
         });
-
     const profile = getElevationProfile(latLngs);
+
     // follow ngx charts object scheme
     track.profile = [{
         name: "elevation",
         series: simplifyProfile(profile,0.5),
     }];
+
     // simplify track
     track.totalDistance = profile[profile.length -1].name;
     track.coordinates = simplifyTrack(latLngs)
@@ -122,7 +123,7 @@ const getDistanceBetween = (lat1, lon1, lat2, lon2) => {
     return roundedToMeter; // 2 * R; R = 6371 km
 }
 
-const simplifyProfile= (data: any[] ,interval: number):any[] =>  {
+const simplifyProfile= (data: any[] ,interval: number): NgxChartPoint[] =>  {
     const res =[];
     for (let count = 0; count < data.length; count= count + interval) {
         const elements = data
