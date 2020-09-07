@@ -5,7 +5,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Adding new tracks
 
-1. add the gpx file to a new folder in \data\tracks\"new folder"
+1. add the gpx file to a new folder in \data\tracks\\"new folder"
 
 2. add a metadata.json file with the metadata you want to add to the track
 
