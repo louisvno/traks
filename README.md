@@ -9,9 +9,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 2. add a metadata.json file with the metadata you want to add to the track
 
-3. run "npm run convert" to convert the track to json and optimize it. The result is added in   \src\assets\tracks folder
+3. run "npm run convert" to convert the track to json and optimize it. The result is added in \src\assets\tracks folder
 
-4. add the trackname to the file \src\assets\trackstracklist.json. Tracks in this list will be published in the app. 
+4. add the trackname to the file \src\assets\tracks\tracklist.json. Tracks in this list will be published in the app. 
 
 
 ## Development server
