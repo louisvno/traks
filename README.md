@@ -5,17 +5,11 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Adding new tracks
 
-1. add the gpx file to a new folder in:
-    
-    data
-    |
-    |__tracks
-        |
-        |__"new folder"
+1. add the gpx file to a new folder in \data\tracks\"new folder"
 
 2. add a metadata.json file with the metadata you want to add to the track
 
-3. run "npm run convert" to convert the track to json and optimize it. The result is added in   src\assets\tracks folder
+3. run "npm run convert" to convert the track to json and optimize it. The result is added in   \src\assets\tracks folder
 
 4. add the trackname to the file \src\assets\trackstracklist.json. Tracks in this list will be published in the app. 
 
