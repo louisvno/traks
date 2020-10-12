@@ -1,0 +1,13 @@
+{
+    "title": "Castellar variant",
+    "activity": "cycling",
+    "description": "Better alternative to the path down along the river in my opinion. Much nicer gravel.",
+    "segments": [
+        {
+            "start": 0,
+            "end": 140,
+            "roadType": 0,
+            "roughness": 2
+        }
+    ]
+}
