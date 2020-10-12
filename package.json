@@ -8,7 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "convert": "ts-node ./data/gpxToJson.ts"
+    "convert": "ts-node ./data/gpxToJson.ts",
+    "new-track":  "node ./data/newTrack.js"
   },
   "private": true,
   "dependencies": {
@@ -53,6 +54,7 @@
     "karma-coverage-istanbul-reporter": "~2.1.0",
     "karma-jasmine": "~3.0.1",
     "karma-jasmine-html-reporter": "^1.4.2",
+    "prompt": "^1.0.0",
     "protractor": "~7.0.0",
     "simplify-js": "^1.2.4",
     "ts-node": "~8.3.0",
