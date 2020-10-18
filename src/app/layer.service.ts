@@ -6,7 +6,6 @@ import { Subscription, Subject } from 'rxjs';
 import { Set } from 'immutable'
 import { Track, TrackViewModel } from './model/TrackMetaData.model';
 import * as L from 'leaflet';
-import 'Leaflet.MultiOptionsPolyline'
 import { RoadColors } from './model/RoadType.model';
 
 @Injectable({
@@ -43,14 +42,14 @@ export class LayerService {
       })
   }
 
-  public async focusOnTrack(l : L.MultiOptionsPolyline, map: L.Map){
+  public async focusOnTrack(l : L.Polyline, map: L.Map){
     map.fitBounds(l.getBounds());
-    const latLngs = l.getLatLngs();
+    const latLngs = l.getLatLngs() as L.LatLng[];
     this.markers.forEach(m => m.remove());
     this.markers = [];
 
     const startIcon = new L.Icon({iconUrl:'/assets/icons/Untitled-1.png', iconAnchor:[9,30]});
-    const startMarker =new L.Marker(latLngs[0],{icon: startIcon});
+    const startMarker =new L.Marker(new L.LatLng(latLngs[0].lat, latLngs[0].lng),{icon: startIcon});
     startMarker.addTo(map);
     this.markers.push(startMarker)
 
@@ -69,14 +68,7 @@ export class LayerService {
   public polyLineFromTrack(track: Track): TrackViewModel{
     // Render segments
     let polylineHelper = L.polyline( track.coordinates, {weight: 20, opacity:0 });
-    let polyline = L.multiOptionsPolyline(
-      track.coordinates, 
-        {multiOptions: {
-          optionIdxFn: (latLng,_,index) => {
-            return track.roadTypeArray[index];
-          },
-          options: [{color: RoadColors.GRAVEL}, {color: RoadColors.ASPHALT}, {color: RoadColors.COBBLE}]
-        }});    
+    let polyline = L.polyline(track.coordinates)    
 
     polylineHelper.on('click', (event: L.LeafletEvent) => {
       this.trackSelected.next({model: track , mapFeature: polyline, touchHelper: polylineHelper});

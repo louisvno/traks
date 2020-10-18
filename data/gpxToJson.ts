@@ -1,6 +1,5 @@
-import { Track, Segment, NgxChartSeries, NgxChartPoint } from "src/app/model/TrackMetaData.model";
+import { Track, NgxChartSeries, NgxChartPoint } from "src/app/model/TrackMetaData.model";
 import { LatLng } from 'leaflet';
-import { mergeMapTo } from 'rxjs/operators';
 /**
  * Parses gpx xml file
  * Simplifies gpx data
@@ -38,11 +37,6 @@ const trackMapper = (gpxJson, metaData): Track => {
     track.coordinates = simplifyTrack(latLngs)
 
     if(metaData){
-        // TODO calculate bounds
-        //track.bounds = boundsMapper(gpxJson.gpx.metadata.find(obj => obj.hasOwnProperty("bounds")));
-        track.roadTypeArray = track.coordinates.map(
-            (_, index) => roadTypeMapper(metaData.segments, index)
-        );
         track.title = metaData.title;
         track.description = metaData.description;
         track.fileName = metaData.fileName;
@@ -59,14 +53,6 @@ const simplifyTrack = (latLngs: LatLng[]) => {
     console.log("Number of points after optimization: " + reducedPoints.length );
     
     return reducedPoints;
-}
-
-const roadTypeMapper = (segments: Segment[], index: number) => {
-        for (let i = 0; i < segments.length; i++) {
-          if(index <= segments[i].end) {
-            return segments[i].roadType;
-          } 
-        } 
 }
 
 const parseGpx = (tracksFolder) => {

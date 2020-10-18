@@ -23,9 +23,6 @@ export class AppComponent {
   }
 
   downloadGPX(model: Track){
-
-    console.log(model)
-    console.log(model.fileName.toString() + model.fileType)
     this.http.get('/assets/gpx/' + model.fileName + model.fileType, {responseType: 'blob'}).toPromise()
       .then(res => {
         saveAs(res,model.fileName + model.fileType);

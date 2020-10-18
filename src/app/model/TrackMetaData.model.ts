@@ -1,7 +1,7 @@
 import { RoadType } from './RoadType.model';
 
 export interface TrackViewModel{
-    mapFeature: L.MultiOptionsPolyline,
+    mapFeature: L.Polyline,
     model: Track,
     touchHelper?: L.Polyline
 }
@@ -19,7 +19,6 @@ export interface Track {
     pois: any[];
     profile: NgxChartSeries[];
     roadTypeArray: RoadType[];
-    segments: Segment[];
     title: string;
     totalDistance: number;
 }
@@ -29,13 +28,6 @@ export interface TrackBounds {
     minlon: number,
     maxlat: number,
     maxlon: number,
-}
-
-export interface Segment {
-    end: number;
-    roadType: number;
-    roughness: number;
-    start: number;
 }
 
 export interface NgxChartSeries {
