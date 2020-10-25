@@ -7,29 +7,32 @@ import { AppComponent } from './app.component';
 import { MapDirective } from './map.directive';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatExpansionModule} from '@angular/material/expansion';
 import {MatButtonModule} from '@angular/material/button'; 
 import {MatListModule} from '@angular/material/list';
 import {MatTabsModule} from '@angular/material/tabs'; 
 import {LineChartModule } from '@swimlane/ngx-charts';
 import {MatDividerModule} from '@angular/material/divider'; 
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import { BottomSheetContentComponent } from './bottom-sheet-content/bottom-sheet-content.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    MapDirective
+    MapDirective,
+    BottomSheetContentComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatExpansionModule,
     MatButtonModule,
     MatTabsModule,
     LineChartModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
+    MatBottomSheetModule
   ],
   providers: [],
   bootstrap: [AppComponent]

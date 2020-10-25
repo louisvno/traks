@@ -1,0 +1,36 @@
+<div class="sheet-container">
+<mat-stroked-button	class="close-btn" (click)="close()">Close</mat-stroked-button>
+<mat-tab-group animationDuration="0ms">
+    <mat-tab label="Description">
+        <div class="tab-text-content">
+            {{model.description}}
+        </div>
+    </mat-tab>
+    <mat-tab label="Profile">
+      <ng-template matTabContent>
+        <div id='chart-container'>
+          <ngx-charts-line-chart
+          id="profile"
+          [autoScale]="true"
+          [xAxis]="true"
+          [yAxis]= "true"
+          [gradient]= "false"
+          [results]="model.profile"></ngx-charts-line-chart>
+        </div>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Data">
+      <ul class="data-list">
+        <li>distance: {{model.totalDistance | number:'1.1-2'}} km</li>
+        <li>min. elevation: {{model.minElevation | number:'1.0-0'}} m</li>
+        <li>max. elevation: {{model.maxElevation | number:'1.0-0'}} m</li>
+      </ul>
+      
+      <mat-divider></mat-divider>
+      <div class="download-area">
+        <button mat-button color="primary" (click)="downloadGPX(model)">Download .gpx</button> 
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+<div id="sheet-footer"></div>
+</div>
