@@ -14,6 +14,7 @@ import {LineChartModule } from '@swimlane/ngx-charts';
 import {MatDividerModule} from '@angular/material/divider'; 
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import { BottomSheetContentComponent } from './bottom-sheet-content/bottom-sheet-content.component';
+import { AngularResizedEventModule } from 'angular-resize-event';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { BottomSheetContentComponent } from './bottom-sheet-content/bottom-sheet
     LineChartModule,
     MatListModule,
     MatDividerModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    AngularResizedEventModule
   ],
   providers: [],
   bootstrap: [AppComponent]

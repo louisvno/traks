@@ -1,7 +1,7 @@
+import { BottomSheetService } from './bottom-sheet.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { Track } from '../model/TrackMetaData.model';
 import { saveAs } from 'file-saver';
 
 @Component({
@@ -13,13 +13,15 @@ export class BottomSheetContentComponent implements OnInit {
 
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public model: any,
    private _bottomSheetRef: MatBottomSheetRef<BottomSheetContentComponent>,
-   private _http: HttpClient) { }
+   private _http: HttpClient,
+   private service: BottomSheetService) { }
 
   ngOnInit(): void {
   }
 
   close(){
     this._bottomSheetRef.dismiss();
+    this.service.closeBtn.next(true);
   }
 
   downloadGPX(){

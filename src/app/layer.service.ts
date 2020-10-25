@@ -1,8 +1,9 @@
+import { BottomSheetService } from './bottom-sheet-content/bottom-sheet.service';
 import { TrackService } from './track.service';
 import { MapService } from './map.service';
 import { Injectable } from '@angular/core';
-import { withLatestFrom } from 'rxjs/operators';
-import { Subscription, Subject } from 'rxjs';
+import { withLatestFrom, delay } from 'rxjs/operators';
+import { Subscription, Subject, zip } from 'rxjs';
 import { Set } from 'immutable'
 import { Track, TrackViewModel } from './model/TrackMetaData.model';
 import * as L from 'leaflet';
@@ -18,8 +19,9 @@ export class LayerService {
   public markers: L.Marker[] = [];
   public trackSelected: Subject<TrackViewModel> = new Subject();
   private trkList: Subscription;
+  public unfocusEvent = new Subject<boolean>();
 
-  constructor(private mapService: MapService, private trackService:TrackService) { 
+  constructor(private mapService: MapService, private trackService:TrackService, private sheetService: BottomSheetService) { 
       this.trkList = this.trackService.trackList.pipe(
         withLatestFrom(this.mapService.map)
       )
@@ -35,14 +37,24 @@ export class LayerService {
       )
 
       this.trackSelected.pipe(
-        withLatestFrom(mapService.map)
+        withLatestFrom(mapService.map),
+        delay(100)
       )
       .subscribe(([trk, map]) => {
         this.focusOnTrack(trk.mapFeature,map)
       })
+
+      this.sheetService.closeBtn.pipe(
+        withLatestFrom(mapService.map),
+        delay(100)
+      )
+      .subscribe(([_,map]) => {
+        this.unFocusTrack(map)
+      })
   }
 
   public async focusOnTrack(l : L.Polyline, map: L.Map){
+    map.invalidateSize();
     map.fitBounds(l.getBounds());
     const latLngs = l.getLatLngs() as L.LatLng[];
     this.markers.forEach(m => m.remove());
@@ -59,6 +71,12 @@ export class LayerService {
     this.markers.push(endMarker)
     //show other track opacity 0.5?
     //
+  }
+
+  public unFocusTrack(map: L.Map){
+    map.invalidateSize();
+    this.markers.forEach(m => m.remove());
+    this.unfocusEvent.next(true);
   }
 
   public async addToMap(l: L.Layer, map: L.Map){

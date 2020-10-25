@@ -6,6 +6,10 @@
 #map-container {
     height: 100%;
     width: 100%;
+
+    &.sheet-open{
+        height: 50%;
+    }
 }
 
 #track-info-panel {

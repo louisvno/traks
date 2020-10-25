@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "convert": "ts-node ./data/gpxToJson.ts",
-    "new-track":  "node ./data/newTrack.js"
+    "new-track": "node ./data/newTrack.js"
   },
   "private": true,
   "dependencies": {
@@ -25,6 +25,7 @@
     "@angular/router": "~9.1.9",
     "@swimlane/ngx-charts": "^14.0.0",
     "@types/leaflet": "^1.5.12",
+    "angular-resize-event": "^2.0.0",
     "file-saver": "^2.0.2",
     "gpx-parse": "^0.10.4",
     "immutable": "^4.0.0-rc.12",
