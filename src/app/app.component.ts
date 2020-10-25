@@ -3,8 +3,6 @@ import { LayerService } from './layer.service';
 import { TrackService } from './track.service';
 import { Component, OnInit } from '@angular/core';
 import { pluck } from 'rxjs/operators';
-import { Track } from './model/TrackMetaData.model';
-import { saveAs } from 'file-saver';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { BottomSheetContentComponent } from './bottom-sheet-content/bottom-sheet-content.component';
 
@@ -32,11 +30,5 @@ export class AppComponent implements OnInit{
 
   openBottomSheet (){
     this._bottomSheet.open(BottomSheetContentComponent);
-  }
-  downloadGPX(model: Track){
-    this.http.get('/assets/gpx/' + model.fileName + model.fileType, {responseType: 'blob'}).toPromise()
-      .then(res => {
-        saveAs(res,model.fileName + model.fileType);
-      })
   }
 }
