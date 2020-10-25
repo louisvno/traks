@@ -68,7 +68,7 @@ export class LayerService {
   public polyLineFromTrack(track: Track): TrackViewModel{
     // Render segments
     let polylineHelper = L.polyline( track.coordinates, {weight: 20, opacity:0 });
-    let polyline = L.polyline(track.coordinates)    
+    let polyline = L.polyline(track.coordinates,{color: track.color})    
 
     polylineHelper.on('click', (event: L.LeafletEvent) => {
       this.trackSelected.next({model: track , mapFeature: polyline, touchHelper: polylineHelper});

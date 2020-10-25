@@ -21,6 +21,7 @@ export interface Track {
     roadTypeArray: RoadType[];
     title: string;
     totalDistance: number;
+    color: string;
 }
 
 export interface TrackBounds {

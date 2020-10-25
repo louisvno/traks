@@ -11,6 +11,14 @@ fs = require('fs'),
 path = require('path'),
 Decimal = require('decimal.js');
 
+const colors =[
+    '#18206F',
+    '#3F7CAC',
+    '#f7f052',
+    '#9b1d20ff',
+    '#f3a712ff',
+    ];
+
 const trackMapper = (gpxJson, metaData): Track => {
     const track = {} as Track;
     const latLngs = gpxJson.gpx.trk[0].trkseg[0].trkpt
@@ -42,7 +50,8 @@ const trackMapper = (gpxJson, metaData): Track => {
         track.fileName = metaData.fileName;
         track.fileType = metaData.fileType;
     }
-
+    track.color = colors[Math.floor(Math.random() * 5)];
+    
     return track;
 }
 
