@@ -3,9 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { LayerService } from './layer.service';
 import { TrackService } from './track.service';
 import { Component, OnInit } from '@angular/core';
-import { pluck, distinctUntilChanged } from 'rxjs/operators';
+import { pluck, tap, filter } from 'rxjs/operators';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { BottomSheetContentComponent } from './bottom-sheet-content/bottom-sheet-content.component';
+import { Track } from './model/TrackMetaData.model';
 
 @Component({
   selector: 'app-root',
@@ -18,12 +19,22 @@ export class AppComponent implements OnInit{
   public colorScheme = {
     domain: ['#5AA454']
   };
+  //evaluate these state variables
   public isSheetOpen = false;
+  private _lastTrackSelected: Track;
+  // when sheet is open, apply distinct until changed
+  // when sheet is closed dont apply distinct until changed
   public trkModel = this.layer.trackSelected.pipe(
-    distinctUntilChanged((x,y) => x.model.fileName === y.model.fileName),
-    pluck('model')
-    );
-  private _currentDismissObs;
+    pluck('model'),
+    filter(trk =>{
+      if(this.isSheetOpen){
+       return this._lastTrackSelected.fileName !== trk.fileName;
+      } else {
+        return true;
+      }}
+    ),
+    tap(trk => this._lastTrackSelected = trk)
+  );
 
   constructor(private trackService: TrackService, private layer: LayerService, 
     private http: HttpClient, private _bottomSheet: MatBottomSheet,
