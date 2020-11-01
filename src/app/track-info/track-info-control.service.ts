@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 export class TrackInfoControlService {
 
   public closeTrackInfo = new Subject<boolean>();
-  public nextClicked = new Subject<boolean>();
-  public previousClicked = new Subject<boolean>();
+  public nextTrack = new Subject<boolean>();
+  public previousTrack = new Subject<boolean>();
   constructor() { }
 }

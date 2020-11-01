@@ -1,5 +1,3 @@
-import { RoadType } from './RoadType.model';
-
 export interface TrackViewModel{
     mapFeature: L.Polyline,
     model: Track,
@@ -9,6 +7,7 @@ export interface TrackViewModel{
 export interface Track {
     activity: string;
     bounds : TrackBounds;
+    color: string;
     coordinates: L.LatLng[];
     description: string;
     difficulty: string;
@@ -18,10 +17,8 @@ export interface Track {
     minElevation: number;
     pois: any[];
     profile: NgxChartSeries[];
-    roadTypeArray: RoadType[];
     title: string;
     totalDistance: number;
-    color: string;
 }
 
 export interface TrackBounds {
