@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BottomSheetContentComponent } from './bottom-sheet-content.component';
+import { TrackInfoComponent } from './track-info.component';
 
-describe('BottomSheetContentComponent', () => {
-  let component: BottomSheetContentComponent;
-  let fixture: ComponentFixture<BottomSheetContentComponent>;
+describe('TrackInfoComponent', () => {
+  let component: TrackInfoComponent;
+  let fixture: ComponentFixture<TrackInfoComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BottomSheetContentComponent ]
+      declarations: [ TrackInfoComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BottomSheetContentComponent);
+    fixture = TestBed.createComponent(TrackInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

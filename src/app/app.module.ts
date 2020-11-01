@@ -12,16 +12,15 @@ import {MatListModule} from '@angular/material/list';
 import {MatTabsModule} from '@angular/material/tabs'; 
 import {LineChartModule } from '@swimlane/ngx-charts';
 import {MatDividerModule} from '@angular/material/divider'; 
-import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
-import { BottomSheetContentComponent } from './bottom-sheet-content/bottom-sheet-content.component';
 import { AngularResizedEventModule } from 'angular-resize-event';
+import { TrackInfoComponent } from './track-info/track-info.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     MapDirective,
-    BottomSheetContentComponent
+    TrackInfoComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +32,6 @@ import { AngularResizedEventModule } from 'angular-resize-event';
     LineChartModule,
     MatListModule,
     MatDividerModule,
-    MatBottomSheetModule,
     AngularResizedEventModule
   ],
   providers: [],

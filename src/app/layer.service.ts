@@ -1,13 +1,12 @@
-import { BottomSheetService } from './bottom-sheet-content/bottom-sheet.service';
+import { TrackInfoControlService } from './track-info/track-info-control.service';
 import { TrackService } from './track.service';
 import { MapService } from './map.service';
 import { Injectable } from '@angular/core';
 import { withLatestFrom, delay } from 'rxjs/operators';
-import { Subscription, Subject, zip } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { Set } from 'immutable'
 import { Track, TrackViewModel } from './model/TrackMetaData.model';
 import * as L from 'leaflet';
-import { RoadColors } from './model/RoadType.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +20,7 @@ export class LayerService {
   private trkList: Subscription;
   public unfocusEvent = new Subject<boolean>();
 
-  constructor(private mapService: MapService, private trackService:TrackService, private sheetService: BottomSheetService) { 
+  constructor(private mapService: MapService, private trackService:TrackService, private trackControls: TrackInfoControlService) { 
       this.trkList = this.trackService.trackList.pipe(
         withLatestFrom(this.mapService.map)
       )
@@ -44,7 +43,7 @@ export class LayerService {
         this.focusOnTrack(trk.mapFeature,map)
       })
 
-      this.sheetService.closeBtn.pipe(
+      this.trackControls.closeTrackInfo.pipe(
         withLatestFrom(mapService.map),
         delay(100)
       )

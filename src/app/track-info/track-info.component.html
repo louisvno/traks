@@ -3,7 +3,7 @@
 <mat-tab-group animationDuration="0ms">
     <mat-tab label="Description">
         <div class="tab-text-content">
-            {{model.description}}
+            {{trackModel.description}}
         </div>
     </mat-tab>
     <mat-tab label="Profile">
@@ -15,15 +15,15 @@
           [xAxis]="true"
           [yAxis]= "true"
           [gradient]= "false"
-          [results]="model.profile"></ngx-charts-line-chart>
+          [results]="trackModel.profile"></ngx-charts-line-chart>
         </div>
       </ng-template>
     </mat-tab>
     <mat-tab label="Data">
       <ul class="data-list">
-        <li>distance: {{model.totalDistance | number:'1.1-2'}} km</li>
-        <li>min. elevation: {{model.minElevation | number:'1.0-0'}} m</li>
-        <li>max. elevation: {{model.maxElevation | number:'1.0-0'}} m</li>
+        <li>distance: {{trackModel.totalDistance | number:'1.1-2'}} km</li>
+        <li>min. elevation: {{trackModel.minElevation | number:'1.0-0'}} m</li>
+        <li>max. elevation: {{trackModel.maxElevation | number:'1.0-0'}} m</li>
       </ul>
       
       <mat-divider></mat-divider>

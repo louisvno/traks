@@ -1,3 +1,8 @@
 <div id="app-container">
-  <div (resized)="onResized()" [ngClass]="{'sheet-open' : isSheetOpen}" id="map-container" appMap></div>
+  <div id="map-container" appMap></div>
+  <ng-container *ngIf="trkModel | async as model">
+    <ng-container *ngIf="showTrackInfo">
+      <app-track-info [trackModel]="model" (onClose)="closeTrackInfo()"></app-track-info>
+    </ng-container>
+  </ng-container>
 </div>

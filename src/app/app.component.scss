@@ -1,33 +1,11 @@
 #app-container {
     height: 100%;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 #map-container {
     height: 100%;
     width: 100%;
-
-    &.sheet-open{
-        height:  calc(100vh - 316px);
-    }
-}
-
-#track-info-panel {
-    z-index: 999;
-    position: absolute;
-    bottom: 20px;
-    width:100%;
-    max-width: 800px;
-
-    @media only screen and (orientation: landscape) {
-        bottom: 0px;
-        &.mat-expanded{
-            height: 100%;
-        }
-    }
-}
-
-.data-list {
-    list-style: none;
-    padding: 0px;
 }
