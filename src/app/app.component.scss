@@ -8,7 +8,7 @@
     width: 100%;
 
     &.sheet-open{
-        height: 50%;
+        height:  calc(100vh - 316px);
     }
 }
 
