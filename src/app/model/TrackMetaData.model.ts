@@ -1,3 +1,5 @@
+import * as L from 'leaflet';
+
 export interface TrackViewModel{
     mapFeature: L.Polyline,
     model: Track,

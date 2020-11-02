@@ -1,0 +1,114 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "L.LatLng": {
+            "properties": {
+                "alt": {
+                    "type": "number"
+                },
+                "lat": {
+                    "type": "number"
+                },
+                "lng": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "lat",
+                "lng"
+            ],
+            "type": "object"
+        },
+        "NgxChartPoint": {
+            "properties": {
+                "name": {
+                    "type": [
+                        "string",
+                        "number"
+                    ]
+                },
+                "value": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "name",
+                "value"
+            ],
+            "type": "object"
+        },
+        "NgxChartSeries": {
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "series": {
+                    "items": {
+                        "$ref": "#/definitions/NgxChartPoint"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "name",
+                "series"
+            ],
+            "type": "object"
+        }
+    },
+    "properties": {
+        "activity": {
+            "type": "string"
+        },
+        "color": {
+            "type": "string"
+        },
+        "coordinates": {
+            "items": {
+                "$ref": "#/definitions/L.LatLng"
+            },
+            "type": "array"
+        },
+        "description": {
+            "type": "string"
+        },
+        "fileName": {
+            "type": "string"
+        },
+        "fileType": {
+            "type": "string"
+        },
+        "maxElevation": {
+            "type": "number"
+        },
+        "minElevation": {
+            "type": "number"
+        },
+        "profile": {
+            "items": {
+                "$ref": "#/definitions/NgxChartSeries"
+            },
+            "type": "array"
+        },
+        "title": {
+            "type": "string"
+        },
+        "totalDistance": {
+            "type": "number"
+        }
+    },
+    "required": [
+        "activity",
+        "color",
+        "coordinates",
+        "description",
+        "fileName",
+        "fileType",
+        "maxElevation",
+        "minElevation",
+        "profile",
+        "title",
+        "totalDistance"
+    ],
+    "type": "object"
+}

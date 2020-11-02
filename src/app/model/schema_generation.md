@@ -1,0 +1,1 @@
+typescript-json-schema "C:\Users\louis\Documents\traks\src\app\model\TrackMetaData.model.ts" Track --required
