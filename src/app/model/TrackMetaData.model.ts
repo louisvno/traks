@@ -6,16 +6,16 @@ export interface TrackViewModel{
 
 export interface Track {
     activity: string;
-    bounds : TrackBounds;
+    //bounds: TrackBounds; not used for the moment
     color: string;
     coordinates: L.LatLng[];
     description: string;
-    difficulty: string;
+    // difficulty: string; not used for the moment
     fileName: string;
     fileType: string;
     maxElevation: number;
     minElevation: number;
-    pois: any[];
+    // pois?: any[];
     profile: NgxChartSeries[];
     title: string;
     totalDistance: number;
