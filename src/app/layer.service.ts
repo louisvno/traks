@@ -26,6 +26,7 @@ export class LayerService {
       )
       .subscribe(
         ([trks, map])=> {
+          console.log('hii')
           trks.forEach(trk => {
             const viewModel = this.polyLineFromTrack(trk);
             if(!this.allLayers.has(viewModel)) this.allLayers.add(viewModel);

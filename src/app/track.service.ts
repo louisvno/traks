@@ -1,26 +1,20 @@
-import { scan, publishReplay, mergeMap } from 'rxjs/operators';
+import { scan, publishReplay, mergeMap, delay, buffer } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Track } from './model/TrackMetaData.model';
-import { Subject,Subscription, ConnectableObservable, from } from 'rxjs';
+import { Subject, Subscription, ConnectableObservable, ReplaySubject, BehaviorSubject, from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TrackService {
 
-  private trackListSub: Subscription;
   public trackLoaded = new Subject<Track>();
-  public trackList = this.trackLoaded.pipe(
-    scan((acc, curr)=> {
-      acc.push(curr)
-      return acc;
-    },[]),
-    publishReplay(1)) as ConnectableObservable<Track[]>;
+  public trackLoadComplete = new BehaviorSubject(false);
+  public trackList = this.trackLoaded.pipe(buffer(this.trackLoadComplete));
     
   //NICETOHAVE possibility for different loader implementation TrackLoader
   constructor(private http: HttpClient) {
-    this.trackListSub = this.trackList.connect();
     this.loadTracks();
   }
  
@@ -34,6 +28,10 @@ export class TrackService {
       mergeMap(trk => this.http.get<Track>(`/assets/tracks/${trk}`,
       {responseType: 'json'}))
     )
-    .subscribe(track => this.trackLoaded.next(track));  
+    .subscribe(
+      track => this.trackLoaded.next(track),
+      err => console.log("[TrackService] track load failed"),
+      () => this.trackLoadComplete.next(true)
+    );  
   }
 }
