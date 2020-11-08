@@ -1,8 +1,8 @@
-import { scan, publishReplay } from 'rxjs/operators';
+import { scan, publishReplay, mergeMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Track } from './model/TrackMetaData.model';
-import { Subject,Subscription, ConnectableObservable } from 'rxjs';
+import { Subject,Subscription, ConnectableObservable, from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -30,11 +30,10 @@ export class TrackService {
       {responseType: 'json'}).toPromise();
 
     //get tracks
-    const trkList = trackList.forEach((async (trk) => {
-      let track : Track = await this.http.get<Track>(`/assets/tracks/${trk}`,
-      {responseType: 'json'}).toPromise();
-
-      this.trackLoaded.next(track);  
-    }));
+    from(trackList).pipe(
+      mergeMap(trk => this.http.get<Track>(`/assets/tracks/${trk}`,
+      {responseType: 'json'}))
+    )
+    .subscribe(track => this.trackLoaded.next(track));  
   }
 }
