@@ -3,7 +3,7 @@ import { TrackService } from './track.service';
 import { MapService } from './map.service';
 import { Injectable } from '@angular/core';
 import { withLatestFrom, delay, filter } from 'rxjs/operators';
-import { Subscription, Subject, Observable, combineLatest, zip } from 'rxjs';
+import { Subject, Observable, combineLatest } from 'rxjs';
 import { Set } from 'immutable'
 import { Track, TrackViewModel } from './model/TrackMetaData.model';
 import * as L from 'leaflet';
@@ -18,7 +18,6 @@ export class LayerService {
   public allLayers: Set<TrackViewModel> = Set();
   public markers: L.Marker[] = [];
   public trackSelected: Subject<TrackViewModel> = new Subject();
-  private trkList: Subscription;
   public unfocusEvent = new Subject<boolean>();
   public mapAndTracksLoaded = new Subject<boolean>();
   private navigationEnd: Observable<RouterEvent>;
@@ -29,7 +28,7 @@ export class LayerService {
     private trackControls: TrackInfoControlService,
     private router : Router
   ) { 
-      this.trkList = this.trackService.trackList.pipe(
+      this.trackService.trackList.pipe(
         withLatestFrom(this.mapService.map)
       )
       .subscribe(
@@ -60,21 +59,24 @@ export class LayerService {
 
       combineLatest(this.navigationEnd, this.mapAndTracksLoaded)
       .subscribe((([event, _]: [RouterEvent, boolean]) => {
-        console.log(event.url.slice(1));
-        console.log(_)
-        console.log(this.allLayers)
-        const track = this.allLayers.find(
-                              vm => { 
-                                return vm.model.fileName === event.url.slice(1)
-                              })
-        this.trackSelected.next(track);
-        }))
+        const trackname = event.url.slice(1);
+        if(trackname) {
+          console.info(trackname);
+          const track = this.allLayers.find(vm => vm.model.fileName === trackname);
+          if(track) {
+            this.trackSelected.next(track);
+          } else {
+            //remove invalid track id from url, no new navigation event
+            // TODO show message to user
+            this.router.navigate(['/']);
+          }
+        }
+      }))
   }
 
   private addTrack(trk: Track, map: L.Map) {
     const viewModel = this.polyLineFromTrack(trk);
     if (!this.allLayers.has(viewModel)){
-      console.log("hii")
       this.allLayers = this.allLayers.add(viewModel);
     }
     console.log(this.allLayers)
