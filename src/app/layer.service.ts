@@ -86,7 +86,7 @@ export class LayerService {
 
   public async focusOnTrack(l : L.Polyline, map: L.Map){
     map.invalidateSize();
-    map.fitBounds(l.getBounds());
+    map.fitBounds(l.getBounds(),{padding:[0,20]});
     const latLngs = l.getLatLngs() as L.LatLng[];
     this.markers.forEach(m => m.remove());
     this.markers = [];
