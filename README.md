@@ -1,6 +1,6 @@
 # Traks
 
-Static blog to show cycling and hiking routes that I've done by plotting gpx data on openstreet maps. Also includes a script to process and optimize the raw gpx data. If you know a bit about Angular you can easily fork this project and add your own gpx data to generate your own blog.
+Static blog to show cycling and hiking routes that I've done by plotting gpx data on openstreet maps using the Leaflet.js library. Also includes a script to process and optimize the raw gpx data. If you know a bit about Angular you can easily fork this project and add your own gpx data to generate your own blog.
 
 ## Adding new tracks
 
