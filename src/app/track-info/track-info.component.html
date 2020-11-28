@@ -1,5 +1,9 @@
 <div class="sheet-container">
-<button mat-stroked-button	class="close-btn" (click)="close()">Close</button>
+  <div class="sheet-header">
+    <span class="track-title">{{trackModel.title}}</span>
+    <button mat-stroked-button	class="close-btn" (click)="close()">Close</button>
+  </div>
+  <!-- <button mat-stroked-button	class="close-btn" (click)="nextTrack()">Next</button> -->
 <mat-tab-group animationDuration="0ms">
     <mat-tab label="Description">
         <div class="tab-text-content">

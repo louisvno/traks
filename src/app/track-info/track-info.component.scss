@@ -8,6 +8,19 @@
     flex-direction: column;
 }
 
+.sheet-header{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #673ab7;
+    color: white;
+
+    span.track-title{
+        padding: 5px 5px 5px 15px;
+    }
+}
+
 #chart-container {
     display: flex;
     justify-content: center;
