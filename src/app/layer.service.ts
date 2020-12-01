@@ -43,7 +43,7 @@ export class LayerService {
         delay(100) // delay needed to wait for resize transform.
       )
       .subscribe(([trk, map]) => {
-        this.focusOnTrack(trk.mapFeature,map)
+        this.focusOnTrack(trk ,map)
       })
 
       this.trackControls.closeTrackInfo.pipe(
@@ -84,7 +84,8 @@ export class LayerService {
     this.addToMap(viewModel.touchHelper, map);
   }
 
-  public async focusOnTrack(l : L.Polyline, map: L.Map){
+  public async focusOnTrack(trk : TrackViewModel, map: L.Map){
+    const l = trk.mapFeature;
     map.invalidateSize();
     map.fitBounds(l.getBounds(),{padding:[0,20]});
     const latLngs = l.getLatLngs() as L.LatLng[];
@@ -100,12 +101,15 @@ export class LayerService {
     const endMarker = new L.Marker(latLngs[latLngs.length -1],{icon: endIcon});
     endMarker.addTo(map);
     this.markers.push(endMarker)
+
+    this.router.navigate([trk.model.fileName])
   }
 
   public unFocusTrack(map: L.Map){
     map.invalidateSize();
     this.markers.forEach(m => m.remove());
     this.unfocusEvent.next(true);
+    this.router.navigate(['/'])
   }
 
   public addToMap(l: L.Layer, map: L.Map){
