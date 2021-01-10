@@ -21,6 +21,7 @@ export interface Track {
     profile: NgxChartSeries[];
     title: string;
     totalDistance: number;
+    youTubeId?: string;
 }
 
 export interface TrackBounds {

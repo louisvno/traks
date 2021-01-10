@@ -1,4 +1,3 @@
-import { LayerService } from './layer.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -14,13 +13,16 @@ import {LineChartModule } from '@swimlane/ngx-charts';
 import {MatDividerModule} from '@angular/material/divider'; 
 import { AngularResizedEventModule } from 'angular-resize-event';
 import { TrackInfoComponent } from './track-info/track-info.component';
+import {YouTubePlayerModule} from '@angular/youtube-player';
+import { VideoComponent } from './video/video.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     MapDirective,
-    TrackInfoComponent
+    TrackInfoComponent,
+    VideoComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +34,8 @@ import { TrackInfoComponent } from './track-info/track-info.component';
     LineChartModule,
     MatListModule,
     MatDividerModule,
-    AngularResizedEventModule
+    AngularResizedEventModule,
+    YouTubePlayerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
