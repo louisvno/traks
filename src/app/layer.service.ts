@@ -92,12 +92,12 @@ export class LayerService {
     this.markers.forEach(m => m.remove());
     this.markers = [];
 
-    const startIcon = new L.Icon({iconUrl:'/assets/icons/Untitled-1.png', iconAnchor:[9,30]});
+    const startIcon = new L.Icon({iconUrl:'/assets/icons/Untitled-1.png', iconAnchor:[16,38]});
     const startMarker =new L.Marker(new L.LatLng(latLngs[0].lat, latLngs[0].lng),{icon: startIcon});
     startMarker.addTo(map);
     this.markers.push(startMarker)
 
-    const endIcon = new L.Icon({iconUrl:'/assets/icons/end-icon-sq.png', iconAnchor:[9,30]})
+    const endIcon = new L.Icon({iconUrl:'/assets/icons/end-icon-sq.png', iconAnchor:[16,38]})
     const endMarker = new L.Marker(latLngs[latLngs.length -1],{icon: endIcon});
     endMarker.addTo(map);
     this.markers.push(endMarker)
