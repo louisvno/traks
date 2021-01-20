@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, SecurityContext, ViewChild } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 let apiLoaded;
 
 @Component({
@@ -8,17 +9,18 @@ let apiLoaded;
 })
 export class VideoComponent implements OnInit {
 
-  apiLoaded: boolean;
-  constructor() { }
+  @ViewChild('iframe-container')
+  iframeContainer: ElementRef<HTMLElement>;
 
+  @Input()
+  videoId: string;
+  videoUrl
+  constructor(private sanitizer: DomSanitizer) { }
+ 
   ngOnInit(): void {
-    if (!apiLoaded) {
-      // This code loads the IFrame Player API code asynchronously, according to the instructions at
-      // https://developers.google.com/youtube/iframe_api_reference#Getting_Started
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      document.body.appendChild(tag);
-      apiLoaded = true;
+    //TODO check lazy loading
+    if(this.videoId){
+      this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`https://player.vimeo.com/video/${this.videoId}?dnt=1`);
     }
   }
 

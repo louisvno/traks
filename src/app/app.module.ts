@@ -22,7 +22,7 @@ import { VideoComponent } from './video/video.component';
     AppComponent,
     MapDirective,
     TrackInfoComponent,
-    VideoComponent
+    VideoComponent,
   ],
   imports: [
     BrowserModule,
