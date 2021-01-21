@@ -49,6 +49,7 @@ const trackMapper = (gpxJson, metaData): Track => {
         track.description = metaData.description;
         track.fileName = metaData.fileName;
         track.fileType = metaData.fileType;
+        track.videoId = metaData.videoId || '';
     }
     track.color = colors[Math.floor(Math.random() * 5)];
     
