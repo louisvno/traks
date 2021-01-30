@@ -1,27 +1,37 @@
-import { Component, ElementRef, Input, OnInit, SecurityContext, ViewChild } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-let apiLoaded;
+import { VideoService } from './../video.service';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, SecurityContext, ViewChild } from '@angular/core';
+import Player from '@vimeo/player'
 
 @Component({
   selector: 'app-video',
   templateUrl: './video.component.html',
   styleUrls: ['./video.component.scss']
 })
-export class VideoComponent implements OnInit {
+export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @ViewChild('iframe-container')
+  @ViewChild('iframeContainer')
   iframeContainer: ElementRef<HTMLElement>;
 
   @Input()
   videoId: string;
-  videoUrl
-  constructor(private sanitizer: DomSanitizer) { }
+  player: Player;
+  constructor(private videoService: VideoService) { }
+
+  ngAfterViewInit(): void {
+    this.player = new Player(this.iframeContainer.nativeElement, {id: this.videoId});
+    this.videoService.setPlayer(this.player);
+    this.player.on('loaded', (val) => console.log('loaded'));
+  }
  
   ngOnInit(): void {
-    //TODO check lazy loading
-    if(this.videoId){
-      this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`https://player.vimeo.com/video/${this.videoId}?dnt=1`);
-    }
   }
+
+  ngOnDestroy(): void {
+    console.log("video component destroyed")
+    //throw new Error('Method not implemented.');
+  }
+  
+
+
 
 }

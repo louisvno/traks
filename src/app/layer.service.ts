@@ -1,3 +1,4 @@
+import { VideoService } from './video.service';
 import { TrackInfoControlService } from './track-info/track-info-control.service';
 import { TrackService } from './track.service';
 import { MapService } from './map.service';
@@ -5,7 +6,7 @@ import { Injectable } from '@angular/core';
 import { withLatestFrom, delay, filter } from 'rxjs/operators';
 import { Subject, Observable, combineLatest } from 'rxjs';
 import { Set } from 'immutable'
-import { Track, TrackViewModel } from './model/TrackMetaData.model';
+import { Track, TrackViewModel, TimeCoordinate } from './model/TrackMetaData.model';
 import * as L from 'leaflet';
 import { RouterEvent, NavigationEnd, Router} from '@angular/router';
 
@@ -26,7 +27,8 @@ export class LayerService {
     private mapService: MapService,
     private trackService:TrackService,
     private trackControls: TrackInfoControlService,
-    private router : Router
+    private router : Router,
+    private videoService: VideoService
   ) { 
       this.trackService.trackList.pipe(
         withLatestFrom(this.mapService.map)
@@ -103,6 +105,17 @@ export class LayerService {
     this.markers.push(endMarker)
 
     this.router.navigate([trk.model.fileName])
+
+    this.videoService.observePlayerTime().subscribe(res => {
+      //findCoordinates for player time
+      const coord = this.getCoordsByTime(res.seconds, trk.model.timeCoordinates);
+      //updatePlayerMarker
+      console.log(coord)
+      startMarker.setLatLng({lat: coord.lat, lng: coord.lng});
+    })
+  }
+  getCoordsByTime(time: number, coords: TimeCoordinate[]){
+    return coords.find(c => c.time >= time);
   }
 
   public unFocusTrack(map: L.Map){

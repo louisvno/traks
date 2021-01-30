@@ -1,16 +1,18 @@
-import { Track, NgxChartSeries, NgxChartPoint } from "src/app/model/TrackMetaData.model";
+import { DateCoordinate, TimeCoordinate } from './../src/app/model/TrackMetaData.model';
+import { Track, NgxChartPoint } from "src/app/model/TrackMetaData.model";
 import { LatLng } from 'leaflet';
 /**
  * Parses gpx xml file
  * Simplifies gpx data
  * Generates Track model json
  */
-const s=require('simplify-js'),
+const simplify=require('simplify-js'),
 xml2js = require('xml2js'),
 fs = require('fs'),
 path = require('path'),
 Decimal = require('decimal.js');
-
+const differenceInSeconds = require('date-fns/differenceInSeconds')
+const parseISO = require('date-fns/parseISO')
 const colors =[
     '#18206F',
     '#3F7CAC',
@@ -21,10 +23,16 @@ const colors =[
 
 const trackMapper = (gpxJson, metaData): Track => {
     const track = {} as Track;
-    const latLngs = gpxJson.gpx.trk[0].trkseg[0].trkpt
-        .map(pt =>{ 
-            return {lat: pt.$.lat , lng: pt.$.lon, alt: new Decimal(pt.ele[0]).round().toNumber()} as LatLng
-        });
+    const coordinates = gpxJson.gpx.trk[0].trkseg[0].trkpt
+        .map((pt) => { 
+            return {
+                    date: pt.time[0],
+                    lat: pt.$.lat , 
+                    lng: pt.$.lon, 
+                    alt: new Decimal(pt.ele[0]).round().toNumber() 
+                }
+            });
+    const latLngs = coordinates.map( c => ({lat: c.lat, lng: c.lng, alt: c.alt}));
     const profile = getElevationProfile(latLngs);
     const simplifiedProfile = simplifyProfile(profile,0.5);
 
@@ -42,8 +50,22 @@ const trackMapper = (gpxJson, metaData): Track => {
         .reduce((a,b) => Math.min(a,b));
 
     track.totalDistance = profile[profile.length -1].name;
-    track.coordinates = simplifyTrack(latLngs)
-
+    const dateCoordinates = simplifyTrack(coordinates);
+    track.coordinates = dateCoordinates.map(c => ({ lat: c.lat, lng: c.lng}));
+    track.timeCoordinates = dateCoordinates.reduce((acc, curr, i) => {
+        const newArr = [...acc];
+        if (i === 0) {
+            newArr.push({lat: curr.lat, lng: curr.lng, time: 0});
+        } else{
+            console.log(curr.date, newArr[i-1])
+            newArr.push({
+                lat: curr.lat,
+                lng: curr.lng, 
+                time: differenceInSeconds(
+                    parseISO(curr.date), parseISO(dateCoordinates[0].date))});
+        }
+        return newArr;
+    }, [])
     if(metaData){
         track.title = metaData.title;
         track.description = metaData.description;
@@ -56,10 +78,22 @@ const trackMapper = (gpxJson, metaData): Track => {
     return track;
 }
 
-const simplifyTrack = (latLngs: LatLng[]) => {    
-    const points = latLngs.map(c => ({x: new Decimal(c.lat).toNumber(), y: new Decimal(c.lng).toNumber(), alt: c.alt}))
+const simplifyTrack = (latLngs) =>  {  
+    
+    const points = latLngs.map(c => (
+    {
+        x: new Decimal(c.lat).toNumber(), 
+        y: new Decimal(c.lng).toNumber(), 
+        alt: c.alt, 
+        date: c.date
+    }))
+    
     console.log("Original n points: " + points.length);
-    const reducedPoints = s(points, 0.00004, true).map(res => ({lat:res.x,lng:res.y} as LatLng));
+    
+    const reducedPoints = 
+        simplify(points, 0.00004, true)
+        .map(res => ({lat:res.x,lng:res.y, date: res.date}));
+
     console.log("Number of points after optimization: " + reducedPoints.length );
     
     return reducedPoints;

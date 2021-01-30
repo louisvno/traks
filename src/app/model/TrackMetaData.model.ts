@@ -20,6 +20,7 @@ export interface Track {
     // pois?: any[];
     profile: NgxChartSeries[];
     title: string;
+    timeCoordinates: TimeCoordinate[];
     totalDistance: number;
     videoId?: string;
 }
@@ -38,4 +39,14 @@ export interface NgxChartSeries {
 export interface NgxChartPoint {
     name: number | string;
     value: number
+}
+
+export interface TimeCoordinate {
+    time: number,
+    lat: number,
+    lng: number
+}
+export interface DateCoordinate {
+    date: Date;
+    coordinate: L.LatLng;
 }
