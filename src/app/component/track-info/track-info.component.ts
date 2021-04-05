@@ -1,6 +1,6 @@
 import { TrackInfoControlService } from './track-info-control.service';
 import { saveAs } from 'file-saver';
-import { Track } from './../model/TrackMetaData.model';
+import { Track } from '../../model/TrackMetaData.model';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 

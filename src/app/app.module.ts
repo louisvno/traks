@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MapDirective } from './map.directive';
+import { MapDirective } from './service/map.directive';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button'; 
@@ -12,9 +12,9 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {LineChartModule } from '@swimlane/ngx-charts';
 import {MatDividerModule} from '@angular/material/divider'; 
 import { AngularResizedEventModule } from 'angular-resize-event';
-import { TrackInfoComponent } from './track-info/track-info.component';
+import { TrackInfoComponent } from './component/track-info/track-info.component';
 import {YouTubePlayerModule} from '@angular/youtube-player';
-import { VideoComponent } from './video/video.component';
+import { VideoComponent } from './component/video/video.component';
 
 
 @NgModule({

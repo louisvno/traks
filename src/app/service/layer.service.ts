@@ -1,12 +1,12 @@
 import { VideoService } from './video.service';
-import { TrackInfoControlService } from './track-info/track-info-control.service';
+import { TrackInfoControlService } from '../component/track-info/track-info-control.service';
 import { TrackService } from './track.service';
 import { MapService } from './map.service';
 import { Injectable } from '@angular/core';
 import { withLatestFrom, delay, filter } from 'rxjs/operators';
 import { Subject, Observable, combineLatest } from 'rxjs';
 import { Set } from 'immutable'
-import { Track, TrackViewModel, TimeCoordinate } from './model/TrackMetaData.model';
+import { Track, TrackViewModel, TimeCoordinate } from '../model/TrackMetaData.model';
 import * as L from 'leaflet';
 import { RouterEvent, NavigationEnd, Router} from '@angular/router';
 

@@ -1,5 +1,5 @@
-import { VideoService } from './../video.service';
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, SecurityContext, ViewChild } from '@angular/core';
+import { VideoService } from '../../service/video.service';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import Player from '@vimeo/player'
 
 @Component({

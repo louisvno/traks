@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { LayerService } from './layer.service';
-import { TrackService } from './track.service';
+import { LayerService } from './service/layer.service';
+import { TrackService } from './service/track.service';
 import { Component, OnInit } from '@angular/core';
 import { pluck, tap, filter } from 'rxjs/operators';
 import { Track } from './model/TrackMetaData.model';

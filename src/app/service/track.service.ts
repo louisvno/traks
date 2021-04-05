@@ -1,8 +1,8 @@
-import { scan, publishReplay, mergeMap, delay, buffer } from 'rxjs/operators';
+import { mergeMap, buffer } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Track } from './model/TrackMetaData.model';
-import { Subject, Subscription, ConnectableObservable, ReplaySubject, BehaviorSubject, from } from 'rxjs';
+import { Track } from '../model/TrackMetaData.model';
+import { Subject, BehaviorSubject, from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
