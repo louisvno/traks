@@ -18,7 +18,7 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(private videoService: VideoService) { }
 
   ngAfterViewInit(): void {
-    this.player = new Player(this.iframeContainer.nativeElement, {id: this.videoId});
+    this.player = new Player(this.iframeContainer.nativeElement, {id: this.videoId, maxheight: 200});
     this.videoService.setPlayer(this.player);
     this.player.on('loaded', (val) => console.log('loaded'));
   }
