@@ -1,12 +1,11 @@
-import { VideoService } from './video.service';
 import { TrackInfoControlService } from '../component/track-info/track-info-control.service';
 import { TrackService } from './track.service';
 import { MapService } from './map.service';
 import { Injectable } from '@angular/core';
-import { withLatestFrom, delay, filter } from 'rxjs/operators';
-import { Subject, Observable, combineLatest } from 'rxjs';
+import { withLatestFrom, delay, filter, take } from 'rxjs/operators';
+import { Subject, Observable, combineLatest, ReplaySubject } from 'rxjs';
 import { Set } from 'immutable'
-import { Track, TrackViewModel, TimeCoordinate } from '../model/TrackMetaData.model';
+import { Track, TrackViewModel } from '../model/TrackMetaData.model';
 import * as L from 'leaflet';
 import { RouterEvent, NavigationEnd, Router} from '@angular/router';
 
@@ -18,7 +17,7 @@ export class LayerService {
   
   public allLayers: Set<TrackViewModel> = Set();
   public markers: L.Marker[] = [];
-  public trackSelected: Subject<TrackViewModel> = new Subject();
+  public trackSelected: ReplaySubject<TrackViewModel> = new ReplaySubject(1);
   public unfocusEvent = new Subject<boolean>();
   public mapAndTracksLoaded = new Subject<boolean>();
   private navigationEnd: Observable<RouterEvent>;
@@ -28,7 +27,6 @@ export class LayerService {
     private trackService:TrackService,
     private trackControls: TrackInfoControlService,
     private router : Router,
-    private videoService: VideoService
   ) { 
       this.trackService.trackList.pipe(
         withLatestFrom(this.mapService.map)
@@ -81,15 +79,23 @@ export class LayerService {
     if (!this.allLayers.has(viewModel)){
       this.allLayers = this.allLayers.add(viewModel);
     }
-    console.log(this.allLayers)
+
     this.addToMap(viewModel.mapFeature, map);
     this.addToMap(viewModel.touchHelper, map);
   }
 
   public async focusOnTrack(trk : TrackViewModel, map: L.Map){
+
     const l = trk.mapFeature;
     map.invalidateSize();
     map.fitBounds(l.getBounds(),{padding:[0,20]});
+    this.initMarkers(map, l)
+  
+    this.router.navigate([trk.model.fileName])
+  }
+
+  public initMarkers(map, l){
+
     const latLngs = l.getLatLngs() as L.LatLng[];
     this.markers.forEach(m => m.remove());
     this.markers = [];
@@ -103,22 +109,31 @@ export class LayerService {
     const endMarker = new L.Marker(latLngs[latLngs.length -1],{icon: endIcon});
     endMarker.addTo(map);
     this.markers.push(endMarker)
-
-    this.router.navigate([trk.model.fileName])
-
-    this.videoService.observePlayerTime().subscribe(res => {
-      //findCoordinates for player time
-      const coord = this.getCoordsByTime(res.seconds, trk.model.timeCoordinates);
-      //updatePlayerMarker
-      console.log(coord)
-      startMarker.setLatLng({lat: coord.lat, lng: coord.lng});
-    })
   }
-  getCoordsByTime(time: number, coords: TimeCoordinate[]){
-    return coords.find(c => c.time >= time);
+
+  public updateStartMarkerPosition(lat, lng) {
+
+    const startMarker = this.markers[0];
+    
+    if(startMarker) {
+      startMarker.setLatLng({lat, lng});
+    }
+  }
+
+  public resetStartMarkerPosition() {
+    const startMarker = this.markers[0];
+    
+    if(startMarker) {
+      this.trackSelected.pipe(take(1)).subscribe(res => {
+        const l = res.mapFeature;
+        const latLngs = l.getLatLngs() as L.LatLng[];
+        startMarker.setLatLng(new L.LatLng(latLngs[0].lat, latLngs[0].lng));
+      })
+    }
   }
 
   public unFocusTrack(map: L.Map){
+
     map.invalidateSize();
     this.markers.forEach(m => m.remove());
     this.unfocusEvent.next(true);
@@ -126,11 +141,12 @@ export class LayerService {
   }
 
   public addToMap(l: L.Layer, map: L.Map){
+
     if(!map.hasLayer(l)) l.addTo(map);
   }
 
   public polyLineFromTrack(track: Track): TrackViewModel{
-    // Render segments
+
     let polylineHelper = L.polyline( track.coordinates, {weight: 20, opacity:0 });
     let polyline = L.polyline(track.coordinates,{color: track.color})    
 

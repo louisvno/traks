@@ -1,7 +1,9 @@
 import { Player } from '@vimeo/player';
 import { Injectable } from '@angular/core';
-import { fromEvent, fromEventPattern, Observable, ReplaySubject, Subject } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { LayerService } from './layer.service';
+import { TimeCoordinate } from '../model/TrackMetaData.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,16 +11,17 @@ import { switchMap } from 'rxjs/operators';
 export class VideoService {
 
   playerDestroy$ = new Subject<string>();
-  private player$ = new ReplaySubject<Player>();
-  //private videoPlayer: Player;
+  private player$ = new ReplaySubject<Player>(1);
 
-  constructor() { 
-    this.observePlayerTime().subscribe(res => console.log(res))
+  constructor(private layerService: LayerService) {
+
+
   }
   // possible to abstract away that player is not yet available?
   // possible to abstract away when player switches?
   observePlayerTime(): Observable<any> {
     return this.playerLoaded().pipe(
+      takeUntil(this.playerDestroy$),
       switchMap(
       (player: Player) => new Observable(observer =>{
         player.on('timeupdate', (val) => observer.next(val))
@@ -36,9 +39,10 @@ export class VideoService {
   }
 
   setPlayer(player: Player){
-    //this.videoPlayer = player;
-    console.log("new player set")
     this.player$.next(player);
   }
 
+  getCoordsByTime(time: number, coords: TimeCoordinate[]){
+    return coords.find(c => c.time >= time);
+  }
 }

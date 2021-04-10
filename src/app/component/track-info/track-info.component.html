@@ -40,9 +40,11 @@
       </div>
     </mat-tab>
     <mat-tab label="Video">
-      <div *ngIf="trackModel.videoId" id="video-container">
-        <app-video [videoId]="trackModel.videoId"></app-video>
-      </div>
+      <ng-template matTabContent>
+        <div *ngIf="trackModel.videoId" id="video-container">
+          <app-video [videoId]="trackModel.videoId"></app-video>
+        </div>
+      </ng-template>
     </mat-tab>
   </mat-tab-group>
 </div>
