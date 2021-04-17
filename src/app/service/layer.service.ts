@@ -8,6 +8,7 @@ import { Set } from 'immutable'
 import { Track, TrackViewModel } from '../model/TrackMetaData.model';
 import * as L from 'leaflet';
 import { RouterEvent, NavigationEnd, Router} from '@angular/router';
+import { MarkerService } from './marker.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,10 +17,11 @@ import { RouterEvent, NavigationEnd, Router} from '@angular/router';
 export class LayerService {
   
   public allLayers: Set<TrackViewModel> = Set();
-  public markers: L.Marker[] = [];
+
   public trackSelected: ReplaySubject<TrackViewModel> = new ReplaySubject(1);
   public unfocusEvent = new Subject<boolean>();
   public mapAndTracksLoaded = new Subject<boolean>();
+
   private navigationEnd: Observable<RouterEvent>;
 
   constructor(
@@ -27,6 +29,7 @@ export class LayerService {
     private trackService:TrackService,
     private trackControls: TrackInfoControlService,
     private router : Router,
+    private trackMarkerService: MarkerService,
   ) { 
       this.trackService.trackList.pipe(
         withLatestFrom(this.mapService.map)
@@ -89,53 +92,15 @@ export class LayerService {
     const l = trk.mapFeature;
     map.invalidateSize();
     map.fitBounds(l.getBounds(),{padding:[0,20]});
-    this.initMarkers(map, l)
+    this.trackMarkerService.initMarkers(map, l);
   
-    this.router.navigate([trk.model.fileName])
-  }
-
-  public initMarkers(map, l){
-
-    const latLngs = l.getLatLngs() as L.LatLng[];
-    this.markers.forEach(m => m.remove());
-    this.markers = [];
-
-    const startIcon = new L.Icon({iconUrl:'/assets/icons/Untitled-1.png', iconAnchor:[16,38]});
-    const startMarker =new L.Marker(new L.LatLng(latLngs[0].lat, latLngs[0].lng),{icon: startIcon});
-    startMarker.addTo(map);
-    this.markers.push(startMarker)
-
-    const endIcon = new L.Icon({iconUrl:'/assets/icons/end-icon-sq.png', iconAnchor:[16,38]})
-    const endMarker = new L.Marker(latLngs[latLngs.length -1],{icon: endIcon});
-    endMarker.addTo(map);
-    this.markers.push(endMarker)
-  }
-
-  public updateStartMarkerPosition(lat, lng) {
-
-    const startMarker = this.markers[0];
-    
-    if(startMarker) {
-      startMarker.setLatLng({lat, lng});
-    }
-  }
-
-  public resetStartMarkerPosition() {
-    const startMarker = this.markers[0];
-    
-    if(startMarker) {
-      this.trackSelected.pipe(take(1)).subscribe(res => {
-        const l = res.mapFeature;
-        const latLngs = l.getLatLngs() as L.LatLng[];
-        startMarker.setLatLng(new L.LatLng(latLngs[0].lat, latLngs[0].lng));
-      })
-    }
+    this.router.navigate([trk.model.fileName]);
   }
 
   public unFocusTrack(map: L.Map){
 
     map.invalidateSize();
-    this.markers.forEach(m => m.remove());
+    this.trackMarkerService.clearMarkers();
     this.unfocusEvent.next(true);
     this.router.navigate(['/'])
   }

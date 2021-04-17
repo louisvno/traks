@@ -4,6 +4,7 @@ import { TrackService } from './service/track.service';
 import { Component, OnInit } from '@angular/core';
 import { pluck, tap, filter } from 'rxjs/operators';
 import { Track } from './model/TrackMetaData.model';
+import { MarkerManagerService } from './service/markerManager.service';
 
 @Component({
   selector: 'app-root',
@@ -36,8 +37,11 @@ export class AppComponent implements OnInit{
     })
   );
 
-  constructor(private trackService: TrackService, private layer: LayerService, 
-    private http: HttpClient ){
+  constructor(
+    private trackService: TrackService, 
+    private layer: LayerService, 
+    private http: HttpClient, 
+    private markerManager: MarkerManagerService ){
 
   }
   ngOnInit(): void {
