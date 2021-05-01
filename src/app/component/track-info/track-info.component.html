@@ -44,6 +44,9 @@
         <div *ngIf="trackModel.videoId" id="video-container">
           <app-video [videoId]="trackModel.videoId"></app-video>
         </div>
+        <div class="tab-text-content">
+          <app-no-video *ngIf="!trackModel.videoId"></app-no-video>
+        </div>
       </ng-template>
     </mat-tab>
   </mat-tab-group>

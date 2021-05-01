@@ -57,7 +57,6 @@ const trackMapper = (gpxJson, metaData): Track => {
         if (i === 0) {
             newArr.push({lat: curr.lat, lng: curr.lng, time: 0});
         } else{
-            console.log(curr.date, newArr[i-1])
             newArr.push({
                 lat: curr.lat,
                 lng: curr.lng, 
@@ -108,7 +107,6 @@ const parseGpx = (tracksFolder) => {
         const dirContents = fs.readdirSync(path.join(tracksFolder, dirent));
         const metaData = dirContents.find((file) => file.startsWith("metadata"));
         const gpxTrk = dirContents.find((file) => file.endsWith(".gpx"))
-        console.log("loading track: " + gpxTrk);
         const gpx = fs.readFileSync(path.join(tracksFolder, dirent, gpxTrk), 'utf8');
         const meta = JSON.parse(fs.readFileSync(path.join(tracksFolder, dirent, metaData)));
          

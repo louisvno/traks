@@ -13,8 +13,8 @@ import {LineChartModule } from '@swimlane/ngx-charts';
 import {MatDividerModule} from '@angular/material/divider'; 
 import { AngularResizedEventModule } from 'angular-resize-event';
 import { TrackInfoComponent } from './component/track-info/track-info.component';
-import {YouTubePlayerModule} from '@angular/youtube-player';
 import { VideoComponent } from './component/video/video.component';
+import { NoVideoComponent } from './component/no-video/no-video.component';
 
 
 @NgModule({
@@ -23,6 +23,7 @@ import { VideoComponent } from './component/video/video.component';
     MapDirective,
     TrackInfoComponent,
     VideoComponent,
+    NoVideoComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,7 +36,6 @@ import { VideoComponent } from './component/video/video.component';
     MatListModule,
     MatDividerModule,
     AngularResizedEventModule,
-    YouTubePlayerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

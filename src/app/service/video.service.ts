@@ -12,8 +12,6 @@ export class VideoService {
   playerDestroy$ = new Subject<string>();
   private player$ = new ReplaySubject<Player>(1);
 
-  // possible to abstract away that player is not yet available?
-  // possible to abstract away when player switches?
   observePlayerTime(): Observable<any> {
     return this.playerLoaded().pipe(
       switchMap(
