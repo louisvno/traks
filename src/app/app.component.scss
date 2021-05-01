@@ -3,9 +3,19 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+
+    @media (orientation: landscape) {
+        flex-direction: row-reverse;
+    }
 }
 
 #map-container {
     height: 100%;
     width: 100%;
+}
+
+app-track-info {
+    @media (orientation: landscape) {
+        max-width: 400px;
+    }
 }
