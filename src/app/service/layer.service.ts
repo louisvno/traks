@@ -22,8 +22,6 @@ export class LayerService {
   public unfocusEvent = new Subject<boolean>();
   public mapAndTracksLoaded = new Subject<boolean>();
 
-  private navigationEnd: Observable<RouterEvent>;
-
   constructor(
     private mapService: MapService,
     private trackService:TrackService,
@@ -56,61 +54,46 @@ export class LayerService {
       .subscribe(([_,map]) => {
         this.unFocusTrack(map)
       })
-      
-      this.navigationEnd = this.router.events.pipe(
-        filter((event: RouterEvent) => event instanceof NavigationEnd));
-
-      combineLatest(this.navigationEnd, this.mapAndTracksLoaded)
-      .subscribe((([event, _]: [RouterEvent, boolean]) => {
-        const trackname = event.url.slice(1);
-        if(trackname) {
-          console.info(trackname);
-          const track = this.allLayers.find(vm => vm.model.fileName === trackname);
-          if(track) {
-            this.trackSelected.next(track);
-          } else {
-            //remove invalid track id from url, no new navigation event
-            // TODO show message to user
-            this.router.navigate(['/']);
-          }
-        }
-      }))
   }
 
   private addTrack(trk: Track, map: L.Map) {
-    const viewModel = this.polyLineFromTrack(trk);
-    if (!this.allLayers.has(viewModel)){
-      this.allLayers = this.allLayers.add(viewModel);
+  
+    const trackViewModel = this.polyLineFromTrack(trk);
+  
+    if (!this.allLayers.has(trackViewModel)){
+      this.allLayers = this.allLayers.add(trackViewModel);
     }
 
-    this.addToMap(viewModel.mapFeature, map);
-    this.addToMap(viewModel.touchHelper, map);
+    this.addToMap(trackViewModel.mapFeature, map);
+    this.addToMap(trackViewModel.touchHelper, map);
   }
 
-  public async focusOnTrack(trk : TrackViewModel, map: L.Map){
+  private focusOnTrack(trk : TrackViewModel, map: L.Map){
 
     const l = trk.mapFeature;
+
     map.invalidateSize();
     map.fitBounds(l.getBounds(),{padding:[0,20]});
+    
     this.trackMarkerService.initMarkers(map, l);
-  
     this.router.navigate([trk.model.fileName]);
   }
 
-  public unFocusTrack(map: L.Map){
+  private unFocusTrack(map: L.Map){
 
     map.invalidateSize();
+  
     this.trackMarkerService.clearMarkers();
     this.unfocusEvent.next(true);
     this.router.navigate(['/'])
   }
 
-  public addToMap(l: L.Layer, map: L.Map){
+  private addToMap(l: L.Layer, map: L.Map){
 
     if(!map.hasLayer(l)) l.addTo(map);
   }
 
-  public polyLineFromTrack(track: Track): TrackViewModel{
+  private polyLineFromTrack(track: Track): TrackViewModel{
 
     let polylineHelper = L.polyline( track.coordinates, {weight: 20, opacity:0 });
     let polyline = L.polyline(track.coordinates,{color: track.color})    
