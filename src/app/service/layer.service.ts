@@ -2,12 +2,12 @@ import { TrackInfoControlService } from '../component/track-info/track-info-cont
 import { TrackService } from './track.service';
 import { MapService } from './map.service';
 import { Injectable } from '@angular/core';
-import { withLatestFrom, delay, filter, take } from 'rxjs/operators';
-import { Subject, Observable, combineLatest, ReplaySubject } from 'rxjs';
+import { withLatestFrom, delay } from 'rxjs/operators';
+import { Subject, ReplaySubject } from 'rxjs';
 import { Set } from 'immutable'
 import { Track, TrackViewModel } from '../model/TrackMetaData.model';
 import * as L from 'leaflet';
-import { RouterEvent, NavigationEnd, Router} from '@angular/router';
+import { Router} from '@angular/router';
 import { MarkerService } from './marker.service';
 
 @Injectable({
