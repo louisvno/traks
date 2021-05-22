@@ -5,10 +5,15 @@
   </div>
   <!-- <button mat-stroked-button	class="close-btn" (click)="nextTrack()">Next</button> -->
 <mat-tab-group animationDuration="0ms">
-    <mat-tab label="Description">
-        <div class="tab-text-content">
-            {{trackModel.description}}
+    <mat-tab label="Video">
+      <ng-template matTabContent>
+        <div *ngIf="trackModel.videoId" id="video-container">
+          <app-video [videoId]="trackModel.videoId"></app-video>
         </div>
+        <div class="tab-text-content">
+          <app-no-video *ngIf="!trackModel.videoId"></app-no-video>
+        </div>
+      </ng-template>
     </mat-tab>
     <mat-tab label="Profile">
       <ng-template matTabContent>
@@ -27,6 +32,11 @@
         </div>
       </ng-template>
     </mat-tab>
+    <mat-tab label="Description">
+        <div class="tab-text-content">
+            {{trackModel.description}}
+        </div>
+    </mat-tab>
     <mat-tab label="Data">
       <ul class="data-list">
         <li>distance: {{trackModel.totalDistance | number:'1.1-2'}} km</li>
@@ -38,16 +48,6 @@
       <div class="download-area">
         <button mat-button color="primary" (click)="downloadGPX()">Download .gpx</button> 
       </div>
-    </mat-tab>
-    <mat-tab label="Video">
-      <ng-template matTabContent>
-        <div *ngIf="trackModel.videoId" id="video-container">
-          <app-video [videoId]="trackModel.videoId"></app-video>
-        </div>
-        <div class="tab-text-content">
-          <app-no-video *ngIf="!trackModel.videoId"></app-no-video>
-        </div>
-      </ng-template>
     </mat-tab>
   </mat-tab-group>
 </div>
