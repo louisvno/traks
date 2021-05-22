@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import * as L from "leaflet";
+import { PointTuple } from "leaflet";
 import { ICON_PATHS } from "../config/icons";
 import { TrackViewModel } from "../model/TrackMetaData.model";
 
@@ -9,6 +10,16 @@ import { TrackViewModel } from "../model/TrackMetaData.model";
 
 export class MarkerService {
   
+  private static startIconConfig: L.BaseIconOptions = {
+    iconUrl: ICON_PATHS.routeStart, 
+    iconAnchor:[16,38] as PointTuple,
+  };
+
+  private static endIconConfig = {
+    iconUrl: ICON_PATHS.routeEnd, 
+    iconAnchor:[16,38] as PointTuple,
+  };
+
   public markers: L.Marker[] = [];
   
   constructor() {}
@@ -18,13 +29,15 @@ export class MarkerService {
     const latLngs = l.getLatLngs() as L.LatLng[];
     this.clearMarkers();
     
-    const startIcon = new L.Icon({iconUrl: ICON_PATHS.routeStart, iconAnchor:[16,38]});
+    const startIcon = new L.Icon(MarkerService.startIconConfig);
     const startMarker =new L.Marker(new L.LatLng(latLngs[0].lat, latLngs[0].lng),{icon: startIcon});
+    
     startMarker.addTo(map);
     this.markers.push(startMarker)
     
-    const endIcon = new L.Icon({iconUrl: ICON_PATHS.routeEnd, iconAnchor:[16,38]})
+    const endIcon = new L.Icon(MarkerService.endIconConfig)
     const endMarker = new L.Marker(latLngs[latLngs.length -1],{icon: endIcon});
+    
     endMarker.addTo(map);
     this.markers.push(endMarker)
   }
