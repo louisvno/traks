@@ -20,7 +20,7 @@ export class TrackService {
  
   async loadTracks(){
     // for the moment loads all tracks
-    const trackList = await this.http.get<[]>('/assets/tracks/tracklist.json',
+    const trackList = await this.http.get<[]>('/assets/tracks/public-tracklist.json',
       {responseType: 'json'}).toPromise();
 
     //get tracks
