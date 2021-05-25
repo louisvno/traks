@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { pluck, tap, filter } from 'rxjs/operators';
 import { Track } from './model/TrackMetaData.model';
 import { MarkerManagerService } from './service/markerManager.service';
+import { UrlRoutingService } from './service/url-routing.service';
 
 @Component({
   selector: 'app-root',
@@ -41,7 +42,8 @@ export class AppComponent implements OnInit{
     private trackService: TrackService, 
     private layer: LayerService, 
     private http: HttpClient, 
-    private markerManager: MarkerManagerService ){
+    private markerManager: MarkerManagerService,
+    private urlRoutingService: UrlRoutingService ){
 
   }
   ngOnInit(): void {
