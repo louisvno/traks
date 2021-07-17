@@ -26,6 +26,7 @@
     "@angular/youtube-player": "^11.0.3",
     "@swimlane/ngx-charts": "^14.0.0",
     "@types/leaflet": "^1.5.12",
+    "@types/vimeo__player": "^2.10.1",
     "@vimeo/player": "^2.15.0",
     "angular-resize-event": "^2.0.0",
     "date-fns": "^2.16.1",

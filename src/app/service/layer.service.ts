@@ -17,8 +17,7 @@ import { MarkerService } from './marker.service';
 export class LayerService {
   
   public allLayers: Set<TrackViewModel> = Set();
-
-  public trackSelected: ReplaySubject<TrackViewModel> = new ReplaySubject(1);
+  public trackSelected: ReplaySubject<TrackViewModel | undefined> = new ReplaySubject(1);
   public unfocusEvent = new Subject<boolean>();
   public mapAndTracksLoaded = new Subject<boolean>();
 
@@ -29,6 +28,7 @@ export class LayerService {
     private router : Router,
     private trackMarkerService: MarkerService,
   ) { 
+      this.trackSelected.next(undefined);
       this.trackService.trackList.pipe(
         withLatestFrom(this.mapService.map)
       )
@@ -44,7 +44,7 @@ export class LayerService {
         delay(100) // delay needed to wait for resize transform.
       )
       .subscribe(([trk, map]) => {
-        this.focusOnTrack(trk ,map)
+        if(trk) this.focusOnTrack(trk ,map);
       })
 
       this.trackControls.closeTrackInfo.pipe(

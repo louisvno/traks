@@ -24,6 +24,7 @@ export class AppComponent implements OnInit{
   // when sheet is open, apply distinct until changed
   // when sheet is closed dont apply distinct until changed
   public trkModel = this.layer.trackSelected.pipe(
+    filter(trk => trk !== undefined),
     pluck('model'),
     filter(trk =>{
       if(this.showTrackInfo){

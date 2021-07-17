@@ -8,7 +8,7 @@
     <mat-tab label="Video">
       <ng-template matTabContent>
         <div *ngIf="trackModel.videoId" id="video-container">
-          <app-video [videoId]="trackModel.videoId"></app-video>
+          <app-video></app-video>
         </div>
         <div class="tab-text-content">
           <app-no-video *ngIf="!trackModel.videoId"></app-no-video>

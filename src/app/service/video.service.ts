@@ -1,7 +1,7 @@
-import { Player } from '@vimeo/player';
-import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { ElementRef, Injectable } from '@angular/core';
+import  Player  from '@vimeo/player';
+import { from, Observable, ReplaySubject, Subject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { TimeCoordinate } from '../model/TrackMetaData.model';
 
 @Injectable({
@@ -9,6 +9,7 @@ import { TimeCoordinate } from '../model/TrackMetaData.model';
 })
 export class VideoService {
 
+  private player: Player;
   playerDestroy$ = new Subject<string>();
   private player$ = new ReplaySubject<Player>(1);
 
@@ -30,11 +31,22 @@ export class VideoService {
     ))
   }
 
-  setPlayer(player: Player){
-    this.player$.next(player);
+  setPlayer(container: ElementRef, videoId: any){
+
+    this.player = new Player(container.nativeElement, {id: videoId, maxheight: 200});
+    this.player$.next(this.player);
+  }
+
+  getPlayer() {
+    return this.player;
   }
 
   getCoordsByTime(time: number, coords: TimeCoordinate[]){
     return coords.find(c => c.time >= time);
+  }
+
+  destroyPlayer() {
+    this.player.destroy();
+    this.playerDestroy$.next();
   }
 }

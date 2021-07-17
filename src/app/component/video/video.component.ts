@@ -1,6 +1,7 @@
 import { VideoService } from '../../service/video.service';
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
-import Player from '@vimeo/player'
+import { AfterViewInit, Component, ElementRef, OnDestroy, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { LayerService } from 'src/app/service/layer.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-video',
@@ -11,19 +12,21 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('iframeContainer')
   iframeContainer: ElementRef<HTMLElement>;
+  trackSelectedSub: Subscription;
 
-  @Input()
-  videoId: string;
-  player: Player;
-  constructor(private videoService: VideoService) { }
+  constructor(private videoService: VideoService, private layerService: LayerService) { }
 
   ngAfterViewInit(): void {
 
-    this.player = new Player(this.iframeContainer.nativeElement, {id: this.videoId, maxheight: 200});
-    this.videoService.setPlayer(this.player);
+    this.trackSelectedSub = this.layerService.trackSelected.subscribe(track => {
+      if(this.videoService.getPlayer()) this.videoService.destroyPlayer();
+      // @ts-ignore
+      this.videoService.setPlayer(this.iframeContainer, track.model.videoId);
+    })
   }
  
   ngOnDestroy(): void {
-    this.videoService.playerDestroy$.next(this.videoId);
+    this.trackSelectedSub.unsubscribe();
+    this.videoService.destroyPlayer();
   }
 }
