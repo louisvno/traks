@@ -18,7 +18,7 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
 
-    this.trackSelectedSub = this.layerService.trackSelected.subscribe(track => {
+    this.trackSelectedSub = this.layerService.selectedTrack.subscribe(track => {
       if(this.videoService.getPlayer()) this.videoService.destroyPlayer();
       // @ts-ignore
       this.videoService.setPlayer(this.iframeContainer, track.model.videoId);

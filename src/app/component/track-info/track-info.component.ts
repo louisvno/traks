@@ -30,7 +30,7 @@ export class TrackInfoComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.resetTabOnTrackChange = this.layerService.trackSelected.subscribe(res => {
+    this.resetTabOnTrackChange = this.layerService.selectedTrack.subscribe(res => {
       this.tabGroup.selectedIndex = 0;
     }); 
   }

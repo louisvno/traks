@@ -17,7 +17,7 @@ import { MarkerService } from './marker.service';
 export class LayerService {
   
   public allLayers: Set<TrackViewModel> = Set();
-  public trackSelected: ReplaySubject<TrackViewModel | undefined> = new ReplaySubject(1);
+  public selectedTrack: ReplaySubject<TrackViewModel | undefined> = new ReplaySubject(1);
   public unfocusEvent = new Subject<boolean>();
   public mapAndTracksLoaded = new Subject<boolean>();
 
@@ -28,7 +28,7 @@ export class LayerService {
     private router : Router,
     private trackMarkerService: MarkerService,
   ) { 
-      this.trackSelected.next(undefined);
+      this.selectedTrack.next(undefined);
       this.trackService.trackList.pipe(
         withLatestFrom(this.mapService.map)
       )
@@ -39,7 +39,7 @@ export class LayerService {
         }
       )
 
-      this.trackSelected.pipe(
+      this.selectedTrack.pipe(
         withLatestFrom(mapService.map),
         delay(100) // delay needed to wait for resize transform.
       )
@@ -76,7 +76,7 @@ export class LayerService {
     map.fitBounds(l.getBounds(),{padding:[0,20]});
     
     this.trackMarkerService.initMarkers(map, l);
-    this.router.navigate([trk.model.fileName]);
+    
   }
 
   private unFocusTrack(map: L.Map){
@@ -99,7 +99,8 @@ export class LayerService {
     let polyline = L.polyline(track.coordinates,{color: track.color})    
 
     polylineHelper.on('click', (event: L.LeafletEvent) => {
-      this.trackSelected.next({model: track , mapFeature: polyline, touchHelper: polylineHelper});
+      this.router.navigate([track.fileName]);
+      //this.selectedTrack.next({model: track , mapFeature: polyline, touchHelper: polylineHelper});
     })  
     return {model: track , mapFeature: polyline,touchHelper: polylineHelper};
   }

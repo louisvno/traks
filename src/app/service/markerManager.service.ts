@@ -20,14 +20,14 @@ export class MarkerManagerService {
   private subscribeToVideoEvents(videoService: VideoService) {
     
     videoService.playerDestroy$
-    .pipe(withLatestFrom(this.layerService.trackSelected))
+    .pipe(withLatestFrom(this.layerService.selectedTrack))
     .subscribe(([_, trk]) => {
       this.markerService.resetStartMarkerPosition(trk);
     });
     
     this.videoService.observePlayerTime()
     .pipe(
-      withLatestFrom(this.layerService.trackSelected)
+      withLatestFrom(this.layerService.selectedTrack)
       )
       .subscribe(([time, trk]) => {
         
