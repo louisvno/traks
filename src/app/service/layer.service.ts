@@ -84,7 +84,10 @@ export class LayerService {
     map.invalidateSize();
   
     this.trackMarkerService.clearMarkers();
+  
     this.unfocusEvent.next(true);
+    this.selectedTrack.next(undefined);
+  
     this.router.navigate(['/'])
   }
 
