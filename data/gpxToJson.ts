@@ -33,25 +33,28 @@ const trackMapper = (gpxJson, metaData): Track => {
                 }
             });
     const latLngs = coordinates.map( c => ({lat: c.lat, lng: c.lng, alt: c.alt}));
-    const profile = getElevationProfile(latLngs);
-    const simplifiedProfile = simplifyProfile(profile,0.5);
-
+    const rawProfile = getElevationProfile(latLngs);
+    const profile = metaData.skipSimplifyProfile ? rawProfile : simplifyProfile(rawProfile,0.5);
     // follow ngx charts object scheme
     track.profile = [{
         name: "elevation",
-        series: simplifiedProfile,
+        series: profile,
     }];
 
-    track.maxElevation = simplifiedProfile
+    track.maxElevation = profile
         .map(p => p.value)
         .reduce((a,b) => Math.max(a,b));
-    track.minElevation = simplifiedProfile
+
+    track.minElevation = profile
         .map(p => p.value)
         .reduce((a,b) => Math.min(a,b));
 
-    track.totalDistance = profile[profile.length -1].name;
+    track.totalDistance = +profile[profile.length -1].name;
+
     const dateCoordinates = simplifyTrack(coordinates);
+
     track.coordinates = dateCoordinates.map(c => ({ lat: c.lat, lng: c.lng}));
+
     track.timeCoordinates = dateCoordinates.reduce((acc, curr, i) => {
         const newArr = [...acc];
         if (i === 0) {
