@@ -14,11 +14,12 @@ Decimal = require('decimal.js');
 const differenceInSeconds = require('date-fns/differenceInSeconds')
 const parseISO = require('date-fns/parseISO')
 const colors =[
-    '#18206F',
-    '#3F7CAC',
-    '#f7f052',
-    '#9b1d20ff',
-    '#f3a712ff',
+    '#276BB0',
+    '#272AB0',
+    '#5727B0',
+    '#9C27B0',
+    '#c2185B',
+    '#E91E63',
     ];
 
 const trackMapper = (gpxJson, metaData): Track => {
