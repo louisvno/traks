@@ -11,7 +11,6 @@ import {MatListModule} from '@angular/material/list';
 import {MatTabsModule} from '@angular/material/tabs'; 
 import {LineChartModule } from '@swimlane/ngx-charts';
 import {MatDividerModule} from '@angular/material/divider'; 
-import { AngularResizedEventModule } from 'angular-resize-event';
 import { TrackInfoComponent } from './component/track-info/track-info.component';
 import { VideoComponent } from './component/video/video.component';
 import { NoVideoComponent } from './component/no-video/no-video.component';
@@ -35,7 +34,6 @@ import { NoVideoComponent } from './component/no-video/no-video.component';
     LineChartModule,
     MatListModule,
     MatDividerModule,
-    AngularResizedEventModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
