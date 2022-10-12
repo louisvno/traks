@@ -23,7 +23,7 @@
     "@angular/platform-browser": "~11.2.14",
     "@angular/platform-browser-dynamic": "~11.2.14",
     "@angular/router": "~11.2.14",
-    "@swimlane/ngx-charts": "^17.0.0",
+    "@swimlane/ngx-charts": "^19.0.0",
     "@types/leaflet": "^1.5.12",
     "@types/vimeo__player": "^2.10.1",
     "@vimeo/player": "^2.15.0",
