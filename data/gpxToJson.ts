@@ -1,5 +1,4 @@
-import { DateCoordinate, TimeCoordinate } from './../src/app/model/TrackMetaData.model';
-import { Track, NgxChartPoint } from "src/app/model/TrackMetaData.model";
+import { Track, NgxChartPoint } from "../src/app/model/TrackMetaData.model";
 import { LatLng } from 'leaflet';
 /**
  * Parses gpx xml file
@@ -75,6 +74,7 @@ const trackMapper = (gpxJson, metaData): Track => {
         track.fileName = metaData.fileName;
         track.fileType = metaData.fileType;
         track.videoId = metaData.videoId || '';
+        track.poiImages = metaData.poiMedia;
     }
     track.color = colors[Math.floor(Math.random() * 5)];
     
@@ -108,11 +108,11 @@ const parseGpx = (tracksFolder) => {
     const dest = './src/assets/tracks/';
 
     for (const dirent of tracks) {
-        const dirContents = fs.readdirSync(path.join(tracksFolder, dirent));
-        const metaData = dirContents.find((file) => file.startsWith("metadata"));
+        const dirContents: string[] = fs.readdirSync(path.join(tracksFolder, dirent));
         const gpxTrk = dirContents.find((file) => file.endsWith(".gpx"))
         const gpx = fs.readFileSync(path.join(tracksFolder, dirent, gpxTrk), 'utf8');
-        const meta = JSON.parse(fs.readFileSync(path.join(tracksFolder, dirent, metaData)));
+
+        const meta = parseMetaData(path.join(tracksFolder, dirent));
          
         const outfile = path.parse(gpxTrk);
         meta.fileName = outfile.name;
@@ -125,6 +125,28 @@ const parseGpx = (tracksFolder) => {
     }
 }
 
+const parseMetaData = (parentDir) => {
+    return JSON.parse(fs.readFileSync(path.join(parentDir, 'metadata.json')));
+}
+
+const copyAssets = (tracksFolder) => {
+    const tracks = fs.readdirSync(tracksFolder);
+    const dest = './src/assets/media/';
+
+    if (!fs.existsSync(dest)){
+        fs.mkdirSync(dest);
+    }
+
+    for (const dirent of tracks) {
+        const dirContents: string[] = fs.readdirSync(path.join(tracksFolder, dirent));
+        const image = dirContents.find((file) => file.endsWith(".png"));
+
+        if(image) {
+            fs.copyFile(path.join(tracksFolder, dirent, image), path.join(dest, image),(err) =>{});
+        }
+    }
+
+}
 
 const getElevationProfile = (latLngs: LatLng[]): {name:number, value: number}[] => {
     const distVsAlt= [];
@@ -183,3 +205,4 @@ const simplifyProfile= (data: any[] ,interval: number): NgxChartPoint[] =>  {
 }
 
 parseGpx("./data/tracks");
+copyAssets("./data/tracks");

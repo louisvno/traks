@@ -1,0 +1,17 @@
+{
+  "compilerOptions":
+    {
+      "target": "es6",
+      "module": "commonjs",
+      "esModuleInterop": true,
+      "lib": ["es6"],
+      "moduleResolution": "node",
+      "strict": false, 
+      "noEmitOnError": true,
+      "noImplicitAny": false,
+      "experimentalDecorators": true, // for typeorm
+      "emitDecoratorMetadata": true // for typeorm
+    },
+  "include": ["node_modules"],
+}
+  

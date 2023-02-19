@@ -17,12 +17,28 @@ export interface Track {
     fileType: string;
     maxElevation: number;
     minElevation: number;
-    // pois?: any[];
     profile: NgxChartSeries[];
+    poiImages: Image[];
+    poiVideos: Video[];
     title: string;
     timeCoordinates: TimeCoordinate[];
     totalDistance: number;
     videoId?: string;
+}
+
+export interface Image {
+    fileName: string;
+    url: string;
+    alt: string;
+    coordinates: L.LatLngExpression[];
+}
+
+export interface Video {
+    videoId: string;
+}
+
+export interface PoiVideo extends Video {
+    coordinates: L.LatLng[];
 }
 
 export interface TrackBounds {
