@@ -21,5 +21,16 @@
             "roadType": 2,
             "roughness": 5
         }
+    ],
+    "poiImages": [
+        {
+            "fileName": "My_project.png",
+            "alt": "just an img",
+            "coordinates": 
+                {
+                    "lat": 41.390205,
+                    "lng": 2.154007
+                }
+        }
     ]
 }

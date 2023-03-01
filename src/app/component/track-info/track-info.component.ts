@@ -6,6 +6,7 @@ import { Component, Input, Output, EventEmitter, AfterViewInit, ViewChild, OnDes
 import { LayerService } from 'src/app/service/layer.service';
 import { MatTabGroup } from '@angular/material/tabs';
 import { Subscription } from 'rxjs';
+import { POIService } from 'src/app/service/poi.service';
 
 @Component({
   selector: 'app-track-info',
@@ -21,7 +22,10 @@ export class TrackInfoComponent implements AfterViewInit, OnDestroy {
 
   private resetTabOnTrackChange: Subscription;
 
-  constructor(private _http: HttpClient, private controls: TrackInfoControlService, private layerService: LayerService) { }
+  constructor(private _http: HttpClient, 
+              private controls: TrackInfoControlService, 
+              private layerService: LayerService,
+              private POIservice: POIService) { }
   
   ngOnDestroy(): void {
     if(this.resetTabOnTrackChange) {
@@ -32,7 +36,7 @@ export class TrackInfoComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.resetTabOnTrackChange = this.layerService.selectedTrack.subscribe(res => {
       this.tabGroup.selectedIndex = 0;
-    }); 
+    });
   }
 
   close(){

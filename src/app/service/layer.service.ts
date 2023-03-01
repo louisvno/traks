@@ -9,6 +9,7 @@ import { Track, TrackViewModel } from '../model/TrackMetaData.model';
 import * as L from 'leaflet';
 import { Router} from '@angular/router';
 import { MarkerService } from './marker.service';
+import { POIService } from './poi.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +28,7 @@ export class LayerService {
     private trackControls: TrackInfoControlService,
     private router : Router,
     private trackMarkerService: MarkerService,
+    private POIService: POIService
   ) { 
       this.selectedTrack.next(undefined);
       this.trackService.trackList.pipe(
@@ -76,7 +78,7 @@ export class LayerService {
     map.fitBounds(l.getBounds(),{padding:[0,20]});
     
     this.trackMarkerService.initMarkers(map, l);
-    
+    this.POIService.initPOIsforTrack(map, trk.model);
   }
 
   private unFocusTrack(map: L.Map){
@@ -84,6 +86,7 @@ export class LayerService {
     map.invalidateSize();
   
     this.trackMarkerService.clearMarkers();
+    this.POIService.clearPOIs();
   
     this.unfocusEvent.next(true);
     this.selectedTrack.next(undefined);

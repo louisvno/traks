@@ -30,7 +30,7 @@ export interface Image {
     fileName: string;
     url: string;
     alt: string;
-    coordinates: L.LatLngExpression[];
+    coordinates: L.LatLngLiteral;
 }
 
 export interface Video {
