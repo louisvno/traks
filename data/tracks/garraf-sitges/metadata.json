@@ -1,5 +1,16 @@
 {
     "title": "Garraf - Sitges",
     "activity": "Running",
-    "description": "Nice route going uphill steeply from the Garraf train station on a small single track path, then though the natural park of el Garraf on broader gravel paths. At the end a smooth downhill into the town of Sitges."
+    "description": "Nice route going uphill steeply from the Garraf train station on a small single track path, then though the natural park of el Garraf on broader gravel paths. At the end a smooth downhill into the town of Sitges.",
+    "poiImages": [
+        {
+            "fileName": "IMG_20220810_095901.jpg",
+            "alt": "view",
+            "coordinates": 
+                {
+                    "lat": 41.2657655,
+                    "lng": 1.8841629
+                }
+        }
+    ]
 }

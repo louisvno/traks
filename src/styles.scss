@@ -2,3 +2,30 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.leaflet-popup-content-wrapper {
+    @media (orientation: landscape) {
+        width: 10vw;
+        height: 20vh;
+    }
+
+    @media (orientation: portrait) {
+        width: 20vw;
+        height: 10vh;
+    }
+
+
+    .leaflet-popup-content {
+        width: 100% !important;
+        height: 100%;
+
+        margin: 0px;
+        padding: 13px;
+        box-sizing: border-box;
+
+        .poi-image {
+            max-height: 100%;
+        }
+    }
+
+}

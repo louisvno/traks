@@ -27,10 +27,10 @@ export class POIService {
             const {lat, lng} = img.coordinates;
             const icon = new L.Icon(POIService.startIconConfig);
             const marker = new L.Marker(new L.LatLng(lat, lng),{icon});
-            const imageHTML = this.document.createElement('img');
+            const imageHTML: HTMLImageElement = this.document.createElement('img');
             console.log(img.fileName)
             imageHTML.src = `/assets/media/${img.fileName}`;
-
+            imageHTML.classList.add('poi-image');
             marker.bindPopup(imageHTML);
             marker.addTo(map);
             this.POIs.push({marker, img});

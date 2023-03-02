@@ -139,7 +139,7 @@ const copyAssets = (tracksFolder) => {
 
     for (const dirent of tracks) {
         const dirContents: string[] = fs.readdirSync(path.join(tracksFolder, dirent));
-        const image = dirContents.find((file) => file.endsWith(".png"));
+        const image = dirContents.find((file) => file.endsWith(".png") || file.endsWith(".jpg"));
 
         if(image) {
             fs.copyFile(path.join(tracksFolder, dirent, image), path.join(dest, image),(err) =>{});
