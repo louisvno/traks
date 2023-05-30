@@ -14,6 +14,8 @@ import {MatDividerModule} from '@angular/material/divider';
 import { TrackInfoComponent } from './component/track-info/track-info.component';
 import { VideoComponent } from './component/video/video.component';
 import { NoVideoComponent } from './component/no-video/no-video.component';
+import { PoiImageComponent } from './component/poi-image/poi-image.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 @NgModule({
@@ -23,6 +25,7 @@ import { NoVideoComponent } from './component/no-video/no-video.component';
     TrackInfoComponent,
     VideoComponent,
     NoVideoComponent,
+    PoiImageComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,6 +37,7 @@ import { NoVideoComponent } from './component/no-video/no-video.component';
     LineChartModule,
     MatListModule,
     MatDividerModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
