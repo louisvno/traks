@@ -14,7 +14,7 @@ import { ScrollStrategyOptions } from "@angular/cdk/overlay";
 export class POIService {
 
     private static startIconConfig: L.BaseIconOptions = {
-        iconUrl: ICON_PATHS.routeStart, 
+        iconUrl: ICON_PATHS.poiImage, 
         iconAnchor:[16,38] as PointTuple,
       };
     

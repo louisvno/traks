@@ -1,0 +1,34 @@
+{
+    "title": "Camprodon - Puig Asencio",
+    "activity": "hike",
+    "description": "",
+    "poiImages": [
+        {
+            "fileName": "camprodon-asencio-1.jpg",
+            "alt": "view",
+            "coordinates": 
+                {
+                    "lat": 42.324239,
+                    "lng": 2.3707839
+                }
+        },
+        {
+            "fileName": "camprodon-asencio-2.jpg",
+            "alt": "view",
+            "coordinates": 
+                {
+                    "lat": 42.3362488,
+                    "lng": 2.3684982
+                }
+        },
+        {
+            "fileName": "camprodon-asencio-3.jpg",
+            "alt": "view",
+            "coordinates": 
+                {
+                    "lat": 42.3359225,
+                    "lng": 2.3701875
+                }
+        }
+    ]
+}

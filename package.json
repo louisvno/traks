@@ -8,8 +8,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "convert": "ts-node -P ./tsconfig.script.json ./data/gpxToJson.ts",
-    "new-track": "node ./data/newTrack.js"
+    "convert": "ts-node -P ./tsconfig.script.json ./scripts/gpxToJson.ts",
+    "new-track": "node ./scripts/newTrack.js",
+    "clean-track": "node ./scripts/removeHrData.js"
   },
   "private": true,
   "dependencies": {

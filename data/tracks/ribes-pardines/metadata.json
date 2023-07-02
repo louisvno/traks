@@ -1,0 +1,34 @@
+{
+    "title": "Ribes - Pardines",
+    "activity": "hike",
+    "description": "",
+    "poiImages": [
+        {
+            "fileName": "ribes-pardines-1.jpg",
+            "alt": "view",
+            "coordinates": 
+                {
+                    "lat": 42.3133934,
+                    "lng": 2.2021473
+                }
+        },
+        {
+            "fileName": "ribes-pardines-2.jpg",
+            "alt": "view",
+            "coordinates": 
+                {
+                    "lat": 42.3114408,
+                    "lng": 2.2052697
+                }
+        },
+        {
+            "fileName": "ribes-pardines-3.jpg",
+            "alt": "view",
+            "coordinates": 
+                {
+                    "lat": 42.3125719,
+                    "lng": 2.2045094
+                }
+        }
+    ]
+}

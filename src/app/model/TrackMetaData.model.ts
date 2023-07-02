@@ -10,7 +10,7 @@ export interface Track {
     activity: string;
     //bounds: TrackBounds; not used for the moment
     color: string;
-    coordinates: L.LatLng[];
+    coordinates: {date: any, lat: number, lng: number, alt: number}[];
     description: string;
     // difficulty: string; not used for the moment
     fileName: string;
