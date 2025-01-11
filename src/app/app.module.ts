@@ -6,16 +6,16 @@ import { AppComponent } from './app.component';
 import { MapDirective } from './service/map.directive';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule} from '@angular/material/button'; 
-import {MatListModule} from '@angular/material/list';
-import {MatTabsModule} from '@angular/material/tabs'; 
+import {MatLegacyButtonModule as MatButtonModule} from '@angular/material/legacy-button'; 
+import {MatLegacyListModule as MatListModule} from '@angular/material/legacy-list';
+import {MatLegacyTabsModule as MatTabsModule} from '@angular/material/legacy-tabs'; 
 import {LineChartModule } from '@swimlane/ngx-charts';
 import {MatDividerModule} from '@angular/material/divider'; 
 import { TrackInfoComponent } from './component/track-info/track-info.component';
 import { VideoComponent } from './component/video/video.component';
 import { NoVideoComponent } from './component/no-video/no-video.component';
 import { PoiImageComponent } from './component/poi-image/poi-image.component';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 
 
 @NgModule({

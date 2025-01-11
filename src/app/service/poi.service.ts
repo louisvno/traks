@@ -4,7 +4,7 @@ import * as L from "leaflet";
 import { PointTuple } from "leaflet";
 import { ICON_PATHS } from "../config/icons";
 import { Track, Image } from "../model/TrackMetaData.model";
-import { MatDialog } from '@angular/material/dialog'; 
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog'; 
 import { PoiImageComponent } from "../component/poi-image/poi-image.component";
 import { ScrollStrategyOptions } from "@angular/cdk/overlay";
 

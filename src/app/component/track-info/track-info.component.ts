@@ -4,7 +4,7 @@ import { Track } from '../../model/TrackMetaData.model';
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, Output, EventEmitter, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
 import { LayerService } from 'src/app/service/layer.service';
-import { MatTabGroup } from '@angular/material/tabs';
+import { MatLegacyTabGroup as MatTabGroup } from '@angular/material/legacy-tabs';
 import { Subscription } from 'rxjs';
 import { POIService } from 'src/app/service/poi.service';
 
