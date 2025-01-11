@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { NavigationEnd, Router, RouterEvent } from "@angular/router";
+import { NavigationEnd, Router, Event } from "@angular/router";
 import { combineLatest, Observable } from "rxjs";
 import { filter, withLatestFrom } from "rxjs/operators";
 import { LayerService } from "./layer.service";
@@ -9,18 +9,17 @@ import { LayerService } from "./layer.service";
 })
 export class UrlRoutingService {
   
-  private navigationEnd: Observable<RouterEvent>;
+  private navigationEnd: Observable<NavigationEnd>;
   
   constructor(private layerService: LayerService, private router: Router){
     this.init();
   }
   
-  
   private init() {
     
     this.navigationEnd = this.router.events.pipe(
-      filter((event: RouterEvent) => event instanceof NavigationEnd)
-    );
+      filter((event: Event) => event instanceof NavigationEnd)
+    ) as Observable<NavigationEnd>;
     // use other combine  
     combineLatest([this.navigationEnd, this.layerService.mapAndTracksLoaded])
     .pipe(withLatestFrom(this.layerService.selectedTrack))
