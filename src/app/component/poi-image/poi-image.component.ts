@@ -12,7 +12,20 @@ export class PoiImageComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: {imgUrl: string}) { }
 
   ngOnInit(): void {
-    this.imageUrl = this.data.imgUrl;
+    this.imageUrl = this.replaceFileExtension(this.data.imgUrl, '.jpeg');
   }
+
+  replaceFileExtension(filePath, newExtension) {
+    // Find the last dot in the file path
+    const lastDotIndex = filePath.lastIndexOf('.');
+    
+    // If a dot is found, replace the extension
+    if (lastDotIndex !== -1) {
+        return filePath.substring(0, lastDotIndex) + newExtension;
+    }
+    
+    // If no extension is found, just append the new extension
+    return filePath + newExtension;
+}
 
 }
